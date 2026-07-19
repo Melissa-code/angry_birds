@@ -9,3 +9,6 @@ const engine = Engine.create();
 const world = engine.world; 
 
 const view = new View(engine);
+
+const runner = Matter.Runner.create();
+Matter.Runner.run(runner, engine);
