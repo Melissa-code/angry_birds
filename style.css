@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #c13030;
+}
+
+ /* clic droit pour inspecter la page ou bien Cmd + Option + I */
+canvas {
+    pointer-events: none; 
+}

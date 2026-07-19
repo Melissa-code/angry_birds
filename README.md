@@ -100,5 +100,11 @@ c'est **p5.js** qui écoute le "cerveau" (l'Engine) et dessine les objets
 *(Note : Au début, il dessine des formes géométriques simples pour les tests, avant l'intégration des vraies images d'oiseaux !)*
 
 
+## 6. Debug
+
+**Note pour l'inspection de l'écran :**
+- le canvas occupe tout l'espace, le clic droit peut être bloqué : 
+- **Sur Mac :** `Cmd` + `Option` + `I`
+- **Sur Windows / Linux :** `Ctrl` + `Shift` + `I` ou `F12`
 
 
