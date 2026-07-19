@@ -1,0 +1,1 @@
+// les structures en bois ou en pierre à détruire
