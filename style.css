@@ -3,10 +3,10 @@
     padding: 0;
     box-sizing: border-box;
     overflow: hidden;
-    background-color: #c13030;
+    /* background-color: #c13030; */
 }
 
  /* clic droit pour inspecter la page ou bien Cmd + Option + I */
-canvas {
+/* canvas {
     pointer-events: none; 
-}
+} */
