@@ -1,11 +1,16 @@
-import { createBird } from '../factories/birdFactory.js';
-import { createPig } from '../factories/pigFactory.js';
-import { createBlock } from '../factories/blockFactory.js';
+// level 1 data 
+const level1 = 
+    {
+        "name": "level 1",
+        "slingshot": { "x": 150, "y": 450 },
+        "entities": [
+            {
+                "type": "bird", "x": 150, "y": 450
+            },
+            {
+                "type": "pig", "x": 800, "y": 300
+            }
+        ]   
+    }
 
-export function loadLevel1(physicalWorld) {
-    const ground = createBlock(400, 590, 800, 20, { isStatic: true });
-    const pig = createPig(600, 500);
-    const bird = createBird(100, 400);
-
-    physicalWorld.addBodies([ground, pig, bird]);
-}
+export default level1;
