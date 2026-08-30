@@ -1,14 +1,16 @@
 // level 1 data 
 const level1 = 
     {
-        "name": "level 1",
-        "slingshot": { "x": 150, "y": 450 },
+        "name": "level-1",
         "entities": [
+            // {
+            //     "type": "slingshot", "x": 100, "y": 200
+            // },
             {
-                "type": "bird", "x": 150, "y": 450
+                "type": "bird", "x": 100, "y": 200
             },
             {
-                "type": "pig", "x": 800, "y": 300
+                "type": "pig", "x": 500, "y": 200
             }
         ]   
     }
