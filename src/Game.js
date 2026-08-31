@@ -11,8 +11,6 @@ export class Game {
         this.height = height;
         this.container = container;
         this.world = new PhysicalWorld(width, height, container);
-
-        // load entities 
         this.entities = loadLevel(level1); // return entities[]
         const bodies = this.entities.map(entity => entity.body);
         this.world.addBodies(bodies);

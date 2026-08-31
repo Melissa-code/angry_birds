@@ -1,4 +1,3 @@
-// Engine et World globaux de Matter.js
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Body = Matter.Body;
@@ -21,14 +20,12 @@ export default class PhysicalWorld {
             options: {
                 width: this.width,
                 height: this.height,
+                wireframes: false, //par défaut Matter.js n'affiche aucune couleur
                 showAngleIndicator: true,
                 showCollisions: true,
                 showVelocity: true
             }
         });
-
-        var ground = Bodies.rectangle(this.width/2, this.height-5, this.width, 10, { isStatic: true, render: { fillStyle: '#060a19' } });
-        this.addBodies([ground]);
     }
 
     // add objects to the world

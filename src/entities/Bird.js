@@ -2,11 +2,9 @@ import { Entity } from './Entity.js';
 
 export class Bird extends Entity {
 
-  constructor(x, y) {
+  constructor(x, y, radius) {
     super('bird', x, y);
-
-    // rayon cercle (oiseau)
-    this.radius = 15;
+    this.radius = radius; // rayon 
 
     // corps physique Matter.js (cercle)
     this.body = Matter.Bodies.circle(x, y, this.radius, {
@@ -14,4 +12,5 @@ export class Bird extends Entity {
       density: 0.004
     });
   }
+  
 }
