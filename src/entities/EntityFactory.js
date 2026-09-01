@@ -1,9 +1,8 @@
 import { Bird } from './Bird.js';
 import { Pig } from './Pig.js';
 import { Ground } from './Ground.js';
+import { Block } from './Block.js';
 // import { Slingshot } from './Slingshot.js';
-// import { Block } from './Block.js';
-
 
 export class EntityFactory {
 
@@ -15,10 +14,10 @@ export class EntityFactory {
         return new Bird(x, y, radius, color);
       case 'pig':
         return new Pig(x, y, radius, color);
+      case 'block':
+        return new Block(x, y, width, height, color);
       // case 'slingshot':
       //   return new Slingshot(x, y);
-      // case 'block':
-      //   return new Block(x, y);
 
       default:
         throw new Error(`entité inconnue: ${type}`);
