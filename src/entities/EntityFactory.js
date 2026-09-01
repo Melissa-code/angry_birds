@@ -12,9 +12,9 @@ export class EntityFactory {
       case 'ground':
         return new Ground(x, y, width, height, color);
       case 'bird':
-        return new Bird(x, y, radius);
+        return new Bird(x, y, radius, color);
       case 'pig':
-        return new Pig(x, y, radius);
+        return new Pig(x, y, radius, color);
       // case 'slingshot':
       //   return new Slingshot(x, y);
       // case 'block':

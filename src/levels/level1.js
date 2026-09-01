@@ -12,19 +12,21 @@ const level1 =
                 "y": 585, 
                 "width": 1000, 
                 "height": 30, 
-                "color": "#95ce93"
+                "color": "#005c00"
             },
             {
                 "type": "bird", 
                 "x": 100, 
                 "y": 200, 
-                "radius": 15
+                "radius": 15,
+                "color": "#ff0000"
             },
             {
                 "type": "pig", 
                 "x": 500, 
                 "y": 200, 
-                "radius": 18
+                "radius": 18,
+                "color": "#27a300"
             }
         ]   
     }

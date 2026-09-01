@@ -3,7 +3,7 @@ import { Entity } from './Entity.js';
 export class Ground extends Entity {
 
     // Matter.Bodies.rectangle(x, y, width, height, [options])→ Body 
-    constructor(x, y, width, height, color = "#95ce93") {
+    constructor(x, y, width, height, color) {
         super('ground', x, y);
         this.width = width; 
         this.height = height; 
@@ -14,7 +14,10 @@ export class Ground extends Entity {
             y, 
             this.width, 
             this.height,
-            { isStatic: true, render: { fillStyle: this.color } }
+            { 
+                isStatic: true, 
+                render: { fillStyle: this.color } 
+            }
         );
     }
 
