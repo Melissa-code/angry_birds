@@ -26,7 +26,7 @@ const level1 =
                 "x": 500, 
                 "y": 200, 
                 "radius": 18,
-                "color": "#27a300"
+                "color": "#3ec300"
             }
         ]   
     }

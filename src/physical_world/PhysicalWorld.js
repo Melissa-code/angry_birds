@@ -21,6 +21,7 @@ export default class PhysicalWorld {
                 width: this.width,
                 height: this.height,
                 wireframes: false, //par défaut Matter.js n'affiche aucune couleur
+                background: 'rgba(19, 209, 255, 0.2)', // ciel
                 showAngleIndicator: true,
                 showCollisions: true,
                 showVelocity: true
