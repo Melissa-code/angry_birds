@@ -13,7 +13,7 @@ export class Bird extends Entity {
       y, 
       this.radius, 
       {
-        restitution: 0.8, // rebondissement
+        restitution: 0.5, // rebondissement
         density: 0.004,
         render: { fillStyle: this.color }
       }

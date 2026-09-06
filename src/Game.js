@@ -13,11 +13,8 @@ export class Game {
         this.entities = [];
         this.bodies = [];
         this.world = new PhysicalWorld(width, height, container);
-        this.isDragging = false;
-
-        // this.container.addEventListener('click', () => {
-        //     this.launchBird();
-        // });
+        this.isDragging = false; 
+        this.startingBirdPosition = null;
     }
   
     /**
@@ -32,7 +29,7 @@ export class Game {
         const bird = this.entities.find(
             entityFound => entityFound instanceof Bird
         );
-        this.catchBird(bird); 
+        this.setUpSlingshot(bird); 
 
         this.world.run();
 
@@ -48,48 +45,50 @@ export class Game {
         });
     }
 
-    // slingshot
+    // --- slingshot --- 
 
     launchBird(bird) {
-        // const bird = this.bodies.filter(body => body.label === 'bird')[0];
-        Matter.Body.setVelocity(bird.body, { x: 20, y: -20 });
+        // transformer l'étirement en vitesse de tir
+        const deltaX = bird.body.position.x - this.startingBirdPosition.x; 
+        const deltaY = bird.body.position.y - this.startingBirdPosition.y;
+        Matter.Body.setVelocity(bird.body, { x: 20, y: 20 });
     }
 
-    // relâcher l'oiseau
     releaseBird(bird) {
         this.isDragging = false;
         this.launchBird(bird);
     }
-
-    // tirerr l'oiseau avec la souris mousemove
-    // Matter.Body.setPosition(body, position {x:..., y:...}, [updateVelocity=false])
+    
     pullBird(bird, mouseX, mouseY) {
+        // Matter.Body.setPosition(body, position {x:..., y:...}, [updateVelocity=false])
         Matter.Body.setPosition(bird.body, { x: mouseX, y: mouseY });
     }
 
     //attrappe l oiseau, tire le en arriere, lâche le , il s'envole dans la direction opposée 
-    catchBird(bird) {
-        console.log('voici bird.body:', bird.body);
+    setUpSlingshot(bird) {
+        this.startingBirdPosition = { 
+            x: bird.body.position.x, 
+            y: bird.body.position.y 
+        };
 
         this.container.addEventListener('mousedown', (event) => {
-            console.log('x et y dans mousedown : ', event.clientX, event.clientY);
-            // théorème de Pythagore :distance = √( (x₂-x₁)² + (y₂-y₁)² ) => hypoténuse
-            const distance = Math.sqrt(
-                ((event.clientX - bird.body.position.x) ** 2) + ((event.clientY - bird.body.position.y) **2)
-            );
-            console.log('distance : ', distance);
+            const rect = this.container.getBoundingClientRect();
 
-            if (distance < bird.body.circleRadius) {
-                console.log('oiseau attrappé')
-                this.isDragging = true;
-            } else {
-                console.log('click en dehors de l oiseau');
-            }
+            const distance = this.#calculateDistance(
+                event.clientX, 
+                event.clientY, 
+                bird.body.position.x, 
+                bird.body.position.y
+            );
+
+            (distance < bird.body.circleRadius) ? this.isDragging = true 
+            : console.log('click en dehors de l\'oiseau');
         });
 
         this.container.addEventListener('mousemove', (event) => {
+            const rect = this.container.getBoundingClientRect();
+
             if (this.isDragging) {
-                console.log('x et y dans mousemove : ', event.clientX, event.clientY);
                 this.pullBird(bird, event.clientX, event.clientY);
             };
         });
@@ -99,6 +98,13 @@ export class Game {
                 this.releaseBird(bird);
             }
         });
+    }
+
+    /**
+     * théorème de Pythagore:distance = √( (x₂-x₁)² + (y₂-y₁)² ) => hypoténuse
+     */
+    #calculateDistance(x1, y1, x2, y2) {
+        return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
     }
 
 }
