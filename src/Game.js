@@ -13,6 +13,7 @@ export class Game {
         this.entities = [];
         this.bodies = [];
         this.world = new PhysicalWorld(width, height, container);
+        this.isDragging = false;
 
         // this.container.addEventListener('click', () => {
         //     this.launchBird();
@@ -47,9 +48,17 @@ export class Game {
         });
     }
 
-    launchBird() {
-        const bird = this.bodies.filter(body => body.label === 'bird')[0];
-        Matter.Body.setVelocity(bird, { x: 20, y: -20 });
+    // slingshot
+
+    launchBird(bird) {
+        // const bird = this.bodies.filter(body => body.label === 'bird')[0];
+        Matter.Body.setVelocity(bird.body, { x: 20, y: -20 });
+    }
+
+    // relâcher l'oiseau
+    releaseBird(bird) {
+        this.isDragging = false;
+        this.launchBird(bird);
     }
 
     // tirerr l'oiseau avec la souris mousemove
@@ -60,7 +69,6 @@ export class Game {
 
     //attrappe l oiseau, tire le en arriere, lâche le , il s'envole dans la direction opposée 
     catchBird(bird) {
-        let isDragging = false;
         console.log('voici bird.body:', bird.body);
 
         this.container.addEventListener('mousedown', (event) => {
@@ -73,20 +81,24 @@ export class Game {
 
             if (distance < bird.body.circleRadius) {
                 console.log('oiseau attrappé')
-                // tirer l'oiseau
-                // this.pullBird(bird, event.clientX, event.clientY);
-                isDragging = true;
+                this.isDragging = true;
             } else {
                 console.log('click en dehors de l oiseau');
             }
         });
 
         this.container.addEventListener('mousemove', (event) => {
-            if (isDragging) {
+            if (this.isDragging) {
+                console.log('x et y dans mousemove : ', event.clientX, event.clientY);
                 this.pullBird(bird, event.clientX, event.clientY);
             };
         });
-    }
 
+        this.container.addEventListener('mouseup', (event) => {
+            if (this.isDragging) {
+                this.releaseBird(bird);
+            }
+        });
+    }
 
 }
