@@ -18,6 +18,7 @@ export class Bird extends Entity {
         render: { fillStyle: this.color }
       }
     );
+    this.body.label = 'bird'; // label pour identifier le corps
   }
   
 }

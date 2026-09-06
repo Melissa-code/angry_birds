@@ -17,5 +17,6 @@ export class Pig extends Entity {
         render: { fillStyle: this.color }
       }
     );
+    this.body.label = 'pig'; // label pour identifier le corps
   }
 }

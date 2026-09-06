@@ -18,10 +18,11 @@ export class Block extends Entity {
             this.width, 
             this.height,
             { 
-              isStatic: true, 
+              isStatic: false, 
               render: { fillStyle: this.color } 
             }
         );
+        this.body.label = 'block'; // label pour identifier le corps
     }
 
 }

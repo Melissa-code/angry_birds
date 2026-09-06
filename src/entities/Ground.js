@@ -19,6 +19,7 @@ export class Ground extends Entity {
                 render: { fillStyle: this.color } 
             }
         );
+        this.body.label = 'ground'; // label pour identifier le corps
     }
 
 }
