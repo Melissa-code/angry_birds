@@ -1,0 +1,37 @@
+
+{
+    "name": "level-1",
+    "entities": [
+        {
+            "type": "ground", 
+            "x": 500, 
+            "y": 585, 
+            "width": 1000, 
+            "height": 30, 
+            "color": "#005c00"
+        },
+        {
+            "type": "bird", 
+            "x": 100, 
+            "y": 200, 
+            "radius": 15,
+            "color": "#ff0000"
+        },
+        {
+            "type": "pig", 
+            "x": 700, 
+            "y": 52, 
+            "radius": 18,
+            "color": "#3ec300"
+        },
+        {
+            "type": "block", 
+            "x": 700, 
+            "y": 320,       
+            "width": 20, 
+            "height": 500, 
+            "color": "#983628"
+        }
+    ]   
+}
+
