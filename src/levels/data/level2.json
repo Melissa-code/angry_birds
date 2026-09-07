@@ -1,0 +1,50 @@
+{
+    "name": "level-2",
+    "entities": [
+        {
+            "type": "ground",
+            "x": 500,
+            "y": 585,
+            "width": 1000,
+            "height": 30,
+            "color": "#005c00"
+        },
+        {
+            "type": "bird",
+            "x": 100,
+            "y": 200,
+            "radius": 15,
+            "color": "#ff0000"
+        },
+        {
+            "type": "block",
+            "x": 600,
+            "y": 470,
+            "width": 20,
+            "height": 200,
+            "color": "#983628"
+        },
+        {
+            "type": "block",
+            "x": 800,
+            "y": 470,
+            "width": 20,
+            "height": 200,
+            "color": "#983628"
+        },
+        {
+            "type": "pig",
+            "x": 700,
+            "y": 350,
+            "radius": 18,
+            "color": "#3ec300"
+        },
+        {
+            "type": "pig",
+            "x": 850,
+            "y": 552,
+            "radius": 18,
+            "color": "#3ec300"
+        }
+    ]
+}

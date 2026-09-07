@@ -11,7 +11,7 @@ export async function loadLevelAsync(levelNumber) {
     if (!response.ok) throw new Error('Failed to fetch level data');
     
     const levelData = await response.json();
-    const entities = levelData.entities.map(
+    return levelData.entities.map(
       data => EntityFactory.createEntity(
         data.type, 
         data.x, 
@@ -21,8 +21,7 @@ export async function loadLevelAsync(levelNumber) {
         data.height, 
         data.color
       )
-    );
-    return entities; 
+    ); 
 
   } catch (error) {
     console.error('Error loading level data:', error);
