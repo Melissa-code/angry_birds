@@ -4,6 +4,7 @@ const Body = Matter.Body;
 const Runner = Matter.Runner;
 const Render = Matter.Render;
 const Bodies = Matter.Bodies;
+const Composite = Matter.Composite;
 
 export default class PhysicalWorld {
 
@@ -32,6 +33,23 @@ export default class PhysicalWorld {
     // add objects to the world
     addBodies(bodies) {
         World.add(this.engine.world, bodies);
+    }
+
+    // effacer tous les objets du monde
+    clear() {
+        World.clear(this.engine.world, false);
+    }
+
+    getPigs() {
+        const pigs = []; 
+        const bodies = Composite.allBodies(this.engine.world); // récupère tous les corps du monde physique
+        for (const body of bodies) {
+            if (body.label === 'pig') {
+                pigs.push(body);
+            }
+        }
+
+        return pigs;
     }
 
     // run simulation (gravity, collisions, movement.....)

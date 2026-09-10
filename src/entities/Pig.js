@@ -6,6 +6,7 @@ export class Pig extends Entity {
     super('pig', x, y);
     this.radius = radius;
     this.color = color;
+    
 
     this.body = Matter.Bodies.circle(
       x,
@@ -18,5 +19,6 @@ export class Pig extends Entity {
       }
     );
     this.body.label = 'pig'; // label pour identifier le corps
+    this.body.isActive = true; // le cochon est actif au départ
   }
 }

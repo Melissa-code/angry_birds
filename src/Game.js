@@ -15,6 +15,7 @@ export class Game {
         this.world = new PhysicalWorld(width, height, container);
         this.isDragging = false; 
         this.startingBirdPosition = null;
+
     }
   
     /**
@@ -38,11 +39,31 @@ export class Game {
             const pairs = event.pairs;
             pairs.forEach(pair => {
                 const { bodyA, bodyB } = pair;
-                if (bodyA.label === 'ground' && bodyB.label === 'pig' || bodyA.label === 'pig' && bodyB.label === 'ground') {
+                if (bodyA.label === 'ground' && bodyB.label === 'pig' 
+                    || bodyA.label === 'pig' && bodyB.label === 'ground') {
                     console.log('Collision entre le cochon et le terrain !');
+
+                    if (bodyA.label === 'pig') {
+                        bodyA.isActive = false; // le cochon est touché
+                    } else {
+                        bodyB.isActive = false; 
+                    }
                 }
             });
+
+            this.checkEndGame();
         });
+    }
+
+    checkEndGame() {
+        const pigs = this.world.getPigs(); 
+
+        const activePigs = pigs.filter(pig => pig.isActive);
+        console.log(pigs);
+        if (activePigs.length === 0) {
+            console.log('Tous les cochons ont été touchés !');
+            // afficher un message de victoire ou passer au niveau suivant
+        }
     }
 
     // --- slingshot --- 
@@ -99,6 +120,9 @@ export class Game {
             }
         });
     }
+
+
+
 
     /**
      * théorème de Pythagore:distance = √( (x₂-x₁)² + (y₂-y₁)² ) => hypoténuse
