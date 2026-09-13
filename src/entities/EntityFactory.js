@@ -5,20 +5,19 @@ import { Block } from './Block.js';
 
 export class EntityFactory {
 
-  static createEntity(type, x, y, radius = null, width = null, height = null, color = null) {
+  static createEntity(type, x, y, radius = null, width = null, height = null, color = null, isStatic = false) {
     switch (type) {
       case 'ground':
         return new Ground(x, y, width, height, color);
       case 'bird':
-        return new Bird(x, y, radius, color);
+        return new Bird(x, y, radius, color, isStatic);
       case 'pig':
         return new Pig(x, y, radius, color);
       case 'block':
-        return new Block(x, y, width, height, color);
+        return new Block(x, y, width, height, color, isStatic);
 
       default:
         throw new Error(`entité inconnue: ${type}`);
     }
   }
-
 }

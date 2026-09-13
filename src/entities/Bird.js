@@ -2,7 +2,7 @@ import { Entity } from './Entity.js';
 
 export class Bird extends Entity {
 
-  constructor(x, y, radius, color) {
+  constructor(x, y, radius, color, isStatic) {
     super('bird', x, y);
     this.radius = radius; // rayon 
     this.color = color; 
@@ -13,8 +13,9 @@ export class Bird extends Entity {
       y, 
       this.radius, 
       {
-        restitution: 0.5, // rebondissement
-        density: 0.004,
+        isStatic: isStatic,
+        restitution: 0.1, // rebondissement
+        density: 0.001,
         render: { fillStyle: this.color }
       }
     );

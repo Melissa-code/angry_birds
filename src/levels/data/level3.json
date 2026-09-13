@@ -1,12 +1,11 @@
-
 {
-    "name": "level-1",
+    "name": "level-3",
+    "birdsCount": 3,
     "entities": [
         { "type": "ground", "x": 500, "y": 585, "width": 1000, "height": 30, "color": "#005c00" },
         { "type": "block", "x": 100, "y": 555, "width": 20, "height": 60, "color": "#983628", "isStatic": true },
         { "type": "bird", "x": 100, "y": 500, "radius": 15, "color": "#ff0000" },
-        { "type": "pig", "x": 700,  "y": 52, "radius": 18,"color": "#3ec300" },
-        { "type": "block", "x": 700, "y": 320, "width": 20, "height": 500, "color": "#983628" }
-    ]   
+        { "type": "block", "x": 700, "y": 530, "width": 100, "height": 80, "color": "#983628", "isStatic": false },
+        { "type": "pig", "x": 700, "y": 472, "radius": 18, "color": "#3ec300" }
+    ]
 }
-

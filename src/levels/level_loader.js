@@ -8,9 +8,11 @@ export async function loadLevelAsync(levelNumber) {
 
   try {
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Failed to fetch level data');
+
+    if (!response.ok) throw new Error('ERREUR: niveau non chargé.');
     
     const levelData = await response.json();
+
     return levelData.entities.map(
       data => EntityFactory.createEntity(
         data.type, 
@@ -19,7 +21,8 @@ export async function loadLevelAsync(levelNumber) {
         data.radius, 
         data.width, 
         data.height, 
-        data.color
+        data.color,
+        data.isStatic
       )
     ); 
 

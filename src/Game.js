@@ -69,6 +69,8 @@ export class Game {
     // --- slingshot --- 
 
     launchBird(bird) {
+        Matter.Body.setStatic(bird.body, false);
+        
         // transformer l'étirement en vitesse de tir
         const deltaX = bird.body.position.x - this.startingBirdPosition.x; 
         const deltaY = bird.body.position.y - this.startingBirdPosition.y;
@@ -121,14 +123,10 @@ export class Game {
         });
     }
 
-
-
-
     /**
      * théorème de Pythagore:distance = √( (x₂-x₁)² + (y₂-y₁)² ) => hypoténuse
      */
     #calculateDistance(x1, y1, x2, y2) {
         return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
     }
-
 }

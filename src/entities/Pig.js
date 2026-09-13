@@ -13,8 +13,8 @@ export class Pig extends Entity {
       y, 
       this.radius, 
       { 
-        restitution: 0.2, //moins de rebondissement que l'oiseau et mois dense
-        density: 0.002,
+        restitution: 0.1, //moins de rebondissement que l'oiseau et mois dense
+        density: 0.001,
         render: { fillStyle: this.color }
       }
     );

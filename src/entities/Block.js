@@ -4,9 +4,7 @@ import { Entity } from './Entity.js';
  * structures en bois/en pierre à détruire
  */
 export class Block extends Entity {
-
-    // Matter.Bodies.rectangle(x, y, width, height, [options])→ Body 
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height, color, isStatic) {
         super('block', x, y);
         this.width = width; 
         this.height = height; 
@@ -18,7 +16,7 @@ export class Block extends Entity {
             this.width, 
             this.height,
             { 
-              isStatic: false, 
+              isStatic: isStatic, 
               render: { fillStyle: this.color } 
             }
         );
