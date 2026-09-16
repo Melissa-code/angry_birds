@@ -15,7 +15,7 @@ export class Bird extends Entity {
       {
         isStatic: isStatic,
         restitution: 0.1, // rebondissement
-        density: 0.001,
+        density: 0.1, // densité
         render: { fillStyle: this.color }
       }
     );
