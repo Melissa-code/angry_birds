@@ -12,6 +12,7 @@ export default class PhysicalWorld {
         this.width = width;
         this.height = height;
         this.container = container;// pour add nv element dans le DOM
+        this.birds = []; // 3 oiseaux à lancer
 
         this.engine = Engine.create();
 
@@ -30,9 +31,27 @@ export default class PhysicalWorld {
         });
     }
 
+    filterBirdsEntities(bodies) {
+        const birds = bodies.filter(body => body.label === 'bird');
+        const othersEntities = bodies.filter(body => body.label !== 'bird');  
+        return { birds, othersEntities }; //birds[] et othersEntities[]
+    }
+
     // add objects to the world
     addBodies(bodies) {
-        World.add(this.engine.world, bodies);
+        const { birds, othersEntities } = this.filterBirdsEntities(bodies);
+        this.birds = birds;
+        World.add(this.engine.world, this.birds[0]); 
+        World.add(this.engine.world, othersEntities);
+        // World.add(this.engine.world, bodies);
+    }
+
+    addNextBird(birdBody) {
+        World.add(this.engine.world, birdBody);
+    }
+
+    removeBird(birdBody) {
+        World.remove(this.engine.world, birdBody);
     }
 
     // effacer tous les objets du monde

@@ -5,7 +5,7 @@ import { Block } from './Block.js';
 
 export class EntityFactory {
 
-  static createEntity(type, x, y, radius = null, width = null, height = null, color = null, isStatic = false) {
+  static createEntity(type, x, y, radius = null, width = null, height = null, color = null, isStatic = true) {
     switch (type) {
       case 'ground':
         return new Ground(x, y, width, height, color);

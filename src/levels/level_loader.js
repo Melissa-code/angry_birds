@@ -27,7 +27,10 @@ export async function loadLevelAsync(levelNumber) {
     ); 
 
   } catch (error) {
-    console.error('Error loading level data:', error);
+    console.error(
+      `Erreur de chargement des données du niveau ${levelNumber} `, 
+      error
+    );
   }
 }
   

@@ -14,12 +14,12 @@ export class Bird extends Entity {
       this.radius, 
       {
         isStatic: isStatic,
-        restitution: 0.1, // rebondissement
-        density: 0.1, // densité
+        restitution: 0.4, // rebondissement
+        density: 0.2, // densité
         render: { fillStyle: this.color }
       }
     );
     this.body.label = 'bird'; // label pour identifier le corps
+    this.body.isActive = true; 
   }
-  
 }

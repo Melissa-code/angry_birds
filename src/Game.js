@@ -12,25 +12,29 @@ export class Game {
         this.container = container;
         this.entities = [];
         this.bodies = [];
+        this.birds = [];
+        this.currentIndexBird = 0;
+        this.currentBird = null; 
         this.world = new PhysicalWorld(width, height, container);
         this.isDragging = false; 
         this.startingBirdPosition = null;
-
     }
   
     /**
-     * règle du langage: constructeur doit toujours retourner l'objet immédiatement et synchrone
+     * règle du langage constructeur doit toujours retourner l'objet immédiatement et synchrone
      */
     async init(currentLevel) {
-        this.entities =  await loadLevelAsync(currentLevel); // return entities[]
+        this.entities = await loadLevelAsync(currentLevel); // return entities[]
         this.bodies = this.entities.map(entity => entity.body);
-        this.world.addBodies(this.bodies);
+        this.world.addBodies(this.bodies); //ajoute les bodies dans le monde physique
 
-        // catch bird with mouse
-        const bird = this.entities.find(
+        // 3 birds[]
+        this.birds = this.entities.filter(
             entityFound => entityFound instanceof Bird
         );
-        this.setUpSlingshot(bird); 
+        this.currentBird = this.birds[this.currentIndexBird];
+
+        this.setUpSlingshot(); 
 
         this.world.run();
 
@@ -51,15 +55,25 @@ export class Game {
                 }
             });
 
-            this.checkEndGame();
+            this.gameOver();
         });
     }
 
-    checkEndGame() {
-        const pigs = this.world.getPigs(); 
+    addNextBird() {
+        this.currentIndexBird ++;
 
+        if (this.currentIndexBird < this.birds.length) {
+            this.currentBird = this.birds[this.currentIndexBird];
+            this.world.addNextBird(this.currentBird.body); // monde phys
+        } else {
+            console.log('Il n\'y a plus d\'oiseaux');
+        }
+    }
+
+    gameOver() {
+        const pigs = this.world.getPigs(); 
         const activePigs = pigs.filter(pig => pig.isActive);
-        console.log(pigs);
+
         if (activePigs.length === 0) {
             console.log('Tous les cochons ont été touchés !');
             // afficher un message de victoire ou passer au niveau suivant
@@ -68,57 +82,62 @@ export class Game {
 
     // --- slingshot --- 
 
-    launchBird(bird) {
-        Matter.Body.setStatic(bird.body, false);
-        
-        // transformer l'étirement en vitesse de tir
-        const deltaX = bird.body.position.x - this.startingBirdPosition.x; 
-        const deltaY = bird.body.position.y - this.startingBirdPosition.y;
-        Matter.Body.setVelocity(bird.body, { x: 20, y: 20 });
+    launchBird() {
+        Matter.Body.setStatic(this.currentBird.body, false); // static jusqu'au lancé
+        Matter.Body.setVelocity(this.currentBird.body, { x: 20, y: 20 });
+     
+        this.currentBird.body.isActive = false; // HS bird
+
+        if (Matter.Body.getVelocity(this.currentBird.body).x === 0 
+            && Matter.Body.getVelocity(this.currentBird.body).y === 0) {
+            console.log('Oiseau HS');
+            this.world.removeBird(this.currentBird.body);
+            this.addNextBird();  
+        }   
     }
 
-    releaseBird(bird) {
+    releaseBird() {
         this.isDragging = false;
-        this.launchBird(bird);
+        this.launchBird();
     }
     
-    pullBird(bird, mouseX, mouseY) {
+    pullBird(mouseX, mouseY) {
         // Matter.Body.setPosition(body, position {x:..., y:...}, [updateVelocity=false])
-        Matter.Body.setPosition(bird.body, { x: mouseX, y: mouseY });
+        Matter.Body.setPosition(this.currentBird.body, { x: mouseX, y: mouseY });
     }
 
     //attrappe l oiseau, tire le en arriere, lâche le , il s'envole dans la direction opposée 
-    setUpSlingshot(bird) {
+    setUpSlingshot() {
         this.startingBirdPosition = { 
-            x: bird.body.position.x, 
-            y: bird.body.position.y 
+            x: this.currentBird.body.position.x, 
+            y: this.currentBird.body.position.y 
         };
 
         this.container.addEventListener('mousedown', (event) => {
-            const rect = this.container.getBoundingClientRect();
+            // this.container.getBoundingClientRect();
 
             const distance = this.#calculateDistance(
                 event.clientX, 
                 event.clientY, 
-                bird.body.position.x, 
-                bird.body.position.y
+                this.currentBird.body.position.x, 
+                this.currentBird.body.position.y
             );
 
-            (distance < bird.body.circleRadius) ? this.isDragging = true 
-            : console.log('click en dehors de l\'oiseau');
+            (distance < this.currentBird.body.circleRadius) ? this.isDragging = true 
+            : console.log('clic en dehors de l\'oiseau');
         });
 
         this.container.addEventListener('mousemove', (event) => {
-            const rect = this.container.getBoundingClientRect();
+            // this.container.getBoundingClientRect();
 
             if (this.isDragging) {
-                this.pullBird(bird, event.clientX, event.clientY);
+                this.pullBird(event.clientX, event.clientY);
             };
         });
 
         this.container.addEventListener('mouseup', (event) => {
             if (this.isDragging) {
-                this.releaseBird(bird);
+                this.releaseBird();
             }
         });
     }
