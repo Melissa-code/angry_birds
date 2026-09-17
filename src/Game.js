@@ -74,8 +74,10 @@ export class Game {
         const pigs = this.world.getPigs(); 
         const activePigs = pigs.filter(pig => pig.isActive);
 
-        if (activePigs.length === 0) {
-            console.log('Tous les cochons ont été touchés !');
+        if (this.currentIndexBird >= this.birds.length - 1 && activePigs.length > 0) {
+            console.log('GAME OVER !')
+        } else if (activePigs.length === 0) {
+            console.log('Tous les cochons ont été touchés ! GAGNE !');
             // afficher un message de victoire ou passer au niveau suivant
         }
     }
@@ -83,17 +85,22 @@ export class Game {
     // --- slingshot --- 
 
     launchBird() {
-        Matter.Body.setStatic(this.currentBird.body, false); // static jusqu'au lancé
+        Matter.Body.setStatic(this.currentBird.body, false); 
         Matter.Body.setVelocity(this.currentBird.body, { x: 20, y: 20 });
      
         this.currentBird.body.isActive = false; // HS bird
 
-        if (Matter.Body.getVelocity(this.currentBird.body).x === 0 
-            && Matter.Body.getVelocity(this.currentBird.body).y === 0) {
+        // if (Matter.Body.getVelocity(this.currentBird.body).x === 0 
+        //     && Matter.Body.getVelocity(this.currentBird.body).y === 0) {
+        //     console.log('Oiseau HS');
+        //     this.world.removeBird(this.currentBird.body);
+        //     this.addNextBird();  
+        // } 
+        setTimeout(() => {
             console.log('Oiseau HS');
             this.world.removeBird(this.currentBird.body);
-            this.addNextBird();  
-        }   
+            this.addNextBird();
+        }, 3000);   
     }
 
     releaseBird() {
