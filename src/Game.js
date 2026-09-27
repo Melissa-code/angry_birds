@@ -41,22 +41,42 @@ export class Game {
         // collision detection between pig and ground
         Matter.Events.on(this.world.engine,'collisionStart', (event) => {
             const pairs = event.pairs;
+
             pairs.forEach(pair => {
                 const { bodyA, bodyB } = pair;
-                if (bodyA.label === 'ground' && bodyB.label === 'pig' 
-                    || bodyA.label === 'pig' && bodyB.label === 'ground') {
-                    console.log('Collision entre le cochon et le terrain !');
+                const pig = this.detectCollision(bodyA, bodyB, 'pig');
 
-                    if (bodyA.label === 'pig') {
-                        bodyA.isActive = false; // le cochon est touché
-                    } else {
-                        bodyB.isActive = false; 
-                    }
+                if (pig) {
+                    pig.isActive = false; // le cochon est touché
+                } 
+                const bird = this.detectCollision(bodyA, bodyB, 'bird');
+                if (bird) {
+                    console.log("bird" , bird)
+                }
+                if (bird && bird.isActive) {
+                    bird.isActive = false; // l'oiseau est touché
+                    console.log('L\'oiseau est touché !');
+                    this.addNextBird();
                 }
             });
 
             this.gameOver();
         });
+
+    }
+
+    detectCollision(bodyA, bodyB, animal){
+        if ((bodyA.label === 'ground' && bodyB.label === animal) 
+            || (bodyA.label === animal && bodyB.label === 'ground')) {
+            console.log('Collision entre ' + animal + ' et le terrain !');
+
+            if (bodyA.label === animal) {
+                return bodyA; // le cochon est touché
+            } else {
+                return bodyB; 
+            }
+        }
+        return null;
     }
 
     addNextBird() {
@@ -86,21 +106,15 @@ export class Game {
 
     launchBird() {
         Matter.Body.setStatic(this.currentBird.body, false); 
-        Matter.Body.setVelocity(this.currentBird.body, { x: 20, y: 20 });
-     
-        this.currentBird.body.isActive = false; // HS bird
+        const deltaX = this.startingBirdPosition.x - this.currentBird.body.position.x;
+        const deltaY = this.startingBirdPosition.y - this.currentBird.body.position.y;
+        
+        const launchVelocity = {
+            x: deltaX * 0.2, // ajuster la vitesse de lancement selon vos besoins
+            y: deltaY * 0.2
+        };
 
-        // if (Matter.Body.getVelocity(this.currentBird.body).x === 0 
-        //     && Matter.Body.getVelocity(this.currentBird.body).y === 0) {
-        //     console.log('Oiseau HS');
-        //     this.world.removeBird(this.currentBird.body);
-        //     this.addNextBird();  
-        // } 
-        setTimeout(() => {
-            console.log('Oiseau HS');
-            this.world.removeBird(this.currentBird.body);
-            this.addNextBird();
-        }, 3000);   
+        Matter.Body.setVelocity(this.currentBird.body, launchVelocity); 
     }
 
     releaseBird() {
@@ -121,8 +135,6 @@ export class Game {
         };
 
         this.container.addEventListener('mousedown', (event) => {
-            // this.container.getBoundingClientRect();
-
             const distance = this.#calculateDistance(
                 event.clientX, 
                 event.clientY, 
@@ -135,8 +147,6 @@ export class Game {
         });
 
         this.container.addEventListener('mousemove', (event) => {
-            // this.container.getBoundingClientRect();
-
             if (this.isDragging) {
                 this.pullBird(event.clientX, event.clientY);
             };
