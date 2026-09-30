@@ -18,12 +18,14 @@ export class Game {
         this.world = new PhysicalWorld(width, height, container);
         this.isDragging = false; 
         this.startingBirdPosition = null;
+        this.currentLevel = 0; 
     }
   
     /**
      * règle du langage constructeur doit toujours retourner l'objet immédiatement et synchrone
      */
     async init(currentLevel) {
+        this.currentLevel = currentLevel; // pour mémoriser le niveau en cours
         this.entities = await loadLevelAsync(currentLevel); // return entities[]
         this.bodies = this.entities.map(entity => entity.body);
         this.world.addBodies(this.bodies); //ajoute les bodies dans le monde physique
@@ -99,7 +101,35 @@ export class Game {
         } else if (activePigs.length === 0) {
             console.log('Tous les cochons ont été touchés ! GAGNE !');
             // afficher un message de victoire ou passer au niveau suivant
+            this.showVictoryMessage(); 
         }
+    }
+
+    showVictoryMessage() {
+        const victoryModal = document.querySelector('#victory-modal');
+        
+        if (victoryModal) {
+            victoryModal.style.display = 'flex';
+        }
+
+        const nextLevelBtn = document.querySelector('#next-level-btn');
+
+        if (nextLevelBtn) {
+            nextLevelBtn.addEventListener('click', () => {
+                victoryModal.style.display = 'none';
+                this.loadNextLevel(); 
+            });
+        }
+    }
+
+    loadNextLevel() {
+        const nextLevel = this.currentLevel +1; 
+    
+        this.world.clear(); // efface le monde physique
+        this.currentIndexBird = 0; 
+        this.currentBird = null; 
+
+        this.init(nextLevel); 
     }
 
     // --- slingshot --- 

@@ -3,10 +3,34 @@
     padding: 0;
     box-sizing: border-box;
     overflow: hidden;
-    /* background-color: #c13030; */
 }
 
- /* clic droit pour inspecter la page ou bien Cmd + Option + I */
-/* canvas {
-    pointer-events: none; 
-} */
+#victory-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* semi-transparent */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+#next-level-btn {
+    margin: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;
+    background-color: rgb(112, 110, 110); 
+    color: white;
+}

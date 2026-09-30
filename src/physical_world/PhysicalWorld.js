@@ -43,7 +43,6 @@ export default class PhysicalWorld {
         this.birds = birds;
         World.add(this.engine.world, this.birds[0]); 
         World.add(this.engine.world, othersEntities);
-        // World.add(this.engine.world, bodies);
     }
 
     addNextBird(birdBody) {
@@ -57,17 +56,18 @@ export default class PhysicalWorld {
     // effacer tous les objets du monde
     clear() {
         World.clear(this.engine.world, false);
+        Matter.Events.off(this.engine); // all events 
     }
 
     getPigs() {
         const pigs = []; 
         const bodies = Composite.allBodies(this.engine.world); // récupère tous les corps du monde physique
+
         for (const body of bodies) {
             if (body.label === 'pig') {
                 pigs.push(body);
             }
         }
-
         return pigs;
     }
 
