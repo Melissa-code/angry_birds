@@ -19,6 +19,11 @@ export class Game {
         this.isDragging = false; 
         this.startingBirdPosition = null;
         this.currentLevel = 0; 
+
+        const nextLevelBtn = document.querySelector('#next-level-btn');
+        if (nextLevelBtn) {
+            nextLevelBtn.addEventListener('click', this.closeModal.bind(this));
+        }
     }
   
     /**
@@ -106,23 +111,16 @@ export class Game {
     }
 
     showVictoryMessage() {
+        console.log("on a gagné !")
         const victoryModal = document.querySelector('#victory-modal');
         
         if (victoryModal) {
             victoryModal.style.display = 'flex';
         }
-
-        const nextLevelBtn = document.querySelector('#next-level-btn');
-
-        if (nextLevelBtn) {
-            nextLevelBtn.addEventListener('click', () => {
-                victoryModal.style.display = 'none';
-                this.loadNextLevel(); 
-            });
-        }
     }
 
     loadNextLevel() {
+        console.log("on est dans loadlevel")
         const nextLevel = this.currentLevel +1; 
     
         this.world.clear(); // efface le monde physique
@@ -130,6 +128,13 @@ export class Game {
         this.currentBird = null; 
 
         this.init(nextLevel); 
+    }
+
+    closeModal() {
+        const victoryModal = document.querySelector('#victory-modal');
+        console.log('Bouton niveau suivant cliqué !');
+        victoryModal.style.display = 'none';
+        this.loadNextLevel();
     }
 
     // --- slingshot --- 

@@ -55,8 +55,8 @@ export default class PhysicalWorld {
 
     // effacer tous les objets du monde
     clear() {
-        World.clear(this.engine.world, false);
         Matter.Events.off(this.engine); // all events 
+        World.clear(this.engine.world, false);
     }
 
     getPigs() {
