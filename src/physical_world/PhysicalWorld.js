@@ -13,6 +13,7 @@ export default class PhysicalWorld {
         this.height = height;
         this.container = container;// pour add nv element dans le DOM
         this.birds = []; // 3 oiseaux à lancer
+        this.score = 0;
 
         this.engine = Engine.create();
 
@@ -28,6 +29,14 @@ export default class PhysicalWorld {
                 showCollisions: true,
                 showVelocity: true
             }
+        });
+
+        // Score design sur canvas 
+        Matter.Events.on(this.render, 'afterRender', () => {
+            const ctx = this.render.context;
+            ctx.fillStyle = 'black';
+            ctx.font = 'bold 24px sans-serif';
+            ctx.fillText('Score : ' + this.score, 40, 40);
         });
     }
 

@@ -45,6 +45,7 @@ export class Game {
 
         this.world.run();
 
+
         // collision detection between pig and ground
         Matter.Events.on(this.world.engine,'collisionStart', (event) => {
             const pairs = event.pairs;
@@ -170,10 +171,10 @@ export class Game {
         };
 
         this.container.addEventListener('mousedown', (event) => {
+            const position = this.#getMousePosition(event); 
             const distance = this.#calculateDistance(
-                event.clientX, 
-                event.clientY, 
-                this.currentBird.body.position.x, 
+                position.x, position.y,
+                this.currentBird.body.position.x,
                 this.currentBird.body.position.y
             );
 
@@ -183,7 +184,8 @@ export class Game {
 
         this.container.addEventListener('mousemove', (event) => {
             if (this.isDragging) {
-                this.pullBird(event.clientX, event.clientY);
+                const position = this.#getMousePosition(event);
+                this.pullBird(position.x, position.y);
             };
         });
 
@@ -192,6 +194,15 @@ export class Game {
                 this.releaseBird();
             }
         });
+    }
+
+    /**
+     * récupère la position de la souris par rapport au canvas
+     */
+    #getMousePosition(event) {
+        const canvas = this.container.querySelector('canvas');
+        const rect = canvas.getBoundingClientRect();
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
     }
 
     /**
