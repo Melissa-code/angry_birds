@@ -8,4 +8,7 @@ document.querySelector('#reset-btn').addEventListener('click', () => {
     location.reload();
 });
 
-// Ajouter un score 
+// 30 img/sec !=60 
+// protection next level 
+// 2 boutons ensble ?
+// image cochon ou oiseau

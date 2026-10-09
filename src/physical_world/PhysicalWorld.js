@@ -32,17 +32,23 @@ export default class PhysicalWorld {
                 showVelocity: true
             }
         });
-
+       
         // Score design sur canvas 
         Matter.Events.on(this.render, 'afterRender', () => {
-            const ctx = this.render.context;
-            ctx.fillStyle = 'black';
-            ctx.font = 'bold 20px sans-serif';
-            ctx.fillText(
-                'Oiseau ' + this.birdNumber + ' - Score : ' + this.score, 40, 40
-            );
-            ctx.fillText('Niveau ' + this.nextLevel, 40, 70);
+            this.refreshZoneInfos();
         });
+    }
+
+    refreshZoneInfos() {
+        console.log('Refresh zone infos index oiseau affichage ', this.birdNumber);
+        const ctx = this.render.context;
+        console.log('context : ', ctx);
+        ctx.fillStyle = 'black';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText(
+            'Oiseau ' + this.birdNumber + ' - Score : ' + this.score, 40, 40
+        );
+        ctx.fillText('Niveau ' + this.nextLevel, 40, 70);
     }
 
     filterBirdsEntities(bodies) {
@@ -71,6 +77,7 @@ export default class PhysicalWorld {
     clear() {
         Matter.Events.off(this.engine); // all events 
         World.clear(this.engine.world, false);
+        Render.world(this.render);
     }
 
     getPigs() {

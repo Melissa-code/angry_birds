@@ -70,3 +70,10 @@ canvas {
         right: 410px;
         }
 }
+
+@media screen and (min-width: 1350px) {
+    #reset-btn {
+        top: 240px;
+        right: 410px;
+        }
+}

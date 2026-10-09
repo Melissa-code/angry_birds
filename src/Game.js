@@ -36,6 +36,7 @@ export class Game {
         this.bodies = this.entities.map(entity => entity.body);
         this.world.addBodies(this.bodies); //ajoute les bodies dans le monde physique
         this.hasWon = false;
+        this.world.refreshZoneInfos();
 
         // 3 ou 4 birds[]
         this.birds = this.entities.filter(
@@ -58,6 +59,7 @@ export class Game {
                 if (pig && pig.isActive) {
                     pig.isActive = false; // le cochon est touché
                     this.world.score += 100;
+                    this.world.refreshZoneInfos(); 
                 } 
 
                 const bird = this.detectCollision(bodyA, bodyB, 'bird');
@@ -89,8 +91,9 @@ export class Game {
 
         if (this.currentIndexBird < this.birds.length) {
             this.currentBird = this.birds[this.currentIndexBird];
-            this.world.birdNumber = this.currentIndexBird + 1; 
+            this.world.birdNumber = this.currentIndexBird + 1;
             this.world.addNextBird(this.currentBird.body); // monde phys
+            this.world.refreshZoneInfos();
         } else {
             console.log('Il n\'y a plus d\'oiseaux');
             this.showGameOverMessage();
@@ -142,9 +145,12 @@ export class Game {
 
         this.world.nextLevel = nextLevel;
         this.world.clear(); // efface le monde physique
+      
         this.currentIndexBird = 0; 
+        this.world.birdNumber = 1;
         this.currentBird = null; 
         this.init(nextLevel); 
+        this.world.refreshZoneInfos();
     }
 
     closeModal() {
