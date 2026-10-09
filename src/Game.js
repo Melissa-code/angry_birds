@@ -93,6 +93,7 @@ export class Game {
             this.world.addNextBird(this.currentBird.body); // monde phys
         } else {
             console.log('Il n\'y a plus d\'oiseaux');
+            this.showGameOverMessage();
         }
     }
 
@@ -100,21 +101,39 @@ export class Game {
         const pigs = this.world.getPigs(); 
         const activePigs = pigs.filter(pig => pig.isActive);
 
-        if (this.currentIndexBird >= this.birds.length - 1 && activePigs.length > 0) {
-            console.log('GAME OVER !')
-        } else if (activePigs.length === 0 && !this.hasWon) {
+        // if (this.currentIndexBird >= this.birds.length - 1 && activePigs.length > 0) {
+        //     console.log('GAME OVER !')
+
+        // Tous les cochons ont été touchés
+        if (activePigs.length === 0 && !this.hasWon) {
             this.hasWon = true;
-            console.log('Tous les cochons ont été touchés GAGNE !');
-            // afficher un message de victoire ou passer au niveau suivant
+    
+            // afficher un message de victoire et passer au niveau suivant
             this.showVictoryMessage(); 
         }
     }
 
     showVictoryMessage() {
-        const victoryModal = document.querySelector('#victory-modal');
-        
-        if (victoryModal) {
-            victoryModal.style.display = 'flex';
+        const modal = document.querySelector('#victory-modal');
+        const nextLevelBtn = document.querySelector('#next-level-btn');
+
+        if (modal && nextLevelBtn) {
+            modal.querySelector('h2').textContent = '🎉 Gagné';
+            modal.style.display = 'flex';
+            nextLevelBtn.style.display = 'inline-block';
+            nextLevelBtn.textContent = 'Prochain niveau';
+        }
+    }
+
+    showGameOverMessage() {
+        const modal = document.querySelector('#victory-modal');
+        const resetBtn = document.querySelector('#reset-btn-modal');
+
+        if (modal && resetBtn) {
+            modal.querySelector('h2').textContent = '💀 Game Over';
+            modal.style.display = 'flex';
+            resetBtn.style.display = 'inline-block';
+            resetBtn.textContent = 'Rejouer';
         }
     }
 
