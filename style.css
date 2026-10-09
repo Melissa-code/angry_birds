@@ -9,7 +9,7 @@ body {
   margin: 0;
   min-height: 100vh;
   display: flex;
-  background-color: rgb(216, 229, 245);
+  background-color: rgb(177, 232, 247);
 }
 
 canvas { 
@@ -67,7 +67,7 @@ canvas {
 
 @media screen and (min-width: 1300px) {
     #reset-btn {
-        top: 250px;
-        right: 450px;
+        top: 240px;
+        right: 410px;
         }
 }

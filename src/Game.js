@@ -37,8 +37,7 @@ export class Game {
         this.world.addBodies(this.bodies); //ajoute les bodies dans le monde physique
         this.hasWon = false;
 
-
-        // 3 birds[]
+        // 3 ou 4 birds[]
         this.birds = this.entities.filter(
             entityFound => entityFound instanceof Bird
         );
@@ -121,18 +120,16 @@ export class Game {
 
     loadNextLevel() {
         const nextLevel = this.currentLevel + 1; 
+
         this.world.nextLevel = nextLevel;
-    
         this.world.clear(); // efface le monde physique
         this.currentIndexBird = 0; 
         this.currentBird = null; 
-
         this.init(nextLevel); 
     }
 
     closeModal() {
         const victoryModal = document.querySelector('#victory-modal');
-        console.log('Bouton niveau suivant cliqué !');
         victoryModal.style.display = 'none';
         this.loadNextLevel();
     }
@@ -145,8 +142,8 @@ export class Game {
         const deltaY = this.startingBirdPosition.y - this.currentBird.body.position.y;
         
         const launchVelocity = {
-            x: deltaX * 0.2, // ajuste la vitesse de lancement selon les besoins
-            y: deltaY * 0.2
+            x: deltaX * 0.25, // ajuste la vitesse de lancement selon les besoins
+            y: deltaY * 0.25
         };
 
         Matter.Body.setVelocity(this.currentBird.body, launchVelocity); 
