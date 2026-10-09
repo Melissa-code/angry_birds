@@ -37,6 +37,7 @@ export class Game {
         this.world.addBodies(this.bodies); //ajoute les bodies dans le monde physique
         this.hasWon = false;
 
+
         // 3 birds[]
         this.birds = this.entities.filter(
             entityFound => entityFound instanceof Bird
@@ -104,7 +105,7 @@ export class Game {
             console.log('GAME OVER !')
         } else if (activePigs.length === 0 && !this.hasWon) {
             this.hasWon = true;
-            console.log('Tous les cochons ont été touchés ! GAGNE !');
+            console.log('Tous les cochons ont été touchés GAGNE !');
             // afficher un message de victoire ou passer au niveau suivant
             this.showVictoryMessage(); 
         }
@@ -119,8 +120,8 @@ export class Game {
     }
 
     loadNextLevel() {
-        console.log("on est dans loadlevel")
-        const nextLevel = this.currentLevel +1; 
+        const nextLevel = this.currentLevel + 1; 
+        this.world.nextLevel = nextLevel;
     
         this.world.clear(); // efface le monde physique
         this.currentIndexBird = 0; 
@@ -144,7 +145,7 @@ export class Game {
         const deltaY = this.startingBirdPosition.y - this.currentBird.body.position.y;
         
         const launchVelocity = {
-            x: deltaX * 0.2, // ajuster la vitesse de lancement selon vos besoins
+            x: deltaX * 0.2, // ajuste la vitesse de lancement selon les besoins
             y: deltaY * 0.2
         };
 

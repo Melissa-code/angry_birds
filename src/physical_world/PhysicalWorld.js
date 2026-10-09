@@ -15,6 +15,7 @@ export default class PhysicalWorld {
         this.birds = []; // 3 oiseaux à lancer
         this.birdNumber = 1;
         this.score = 0;
+        this.nextLevel = 1; 
 
         this.engine = Engine.create();
 
@@ -38,8 +39,9 @@ export default class PhysicalWorld {
             ctx.fillStyle = 'black';
             ctx.font = 'bold 20px sans-serif';
             ctx.fillText(
-                'Oiseau n° ' + this.birdNumber + ' - Score : ' + this.score, 40, 40
+                'Oiseau : ' + this.birdNumber + ' - Score : ' + this.score, 40, 40
             );
+            ctx.fillText('Niveau : ' + this.nextLevel, 40, 70);
         });
     }
 
