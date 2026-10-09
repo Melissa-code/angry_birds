@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Angry Birds is a popular mobile game developed by Rovio Entertainment. Players use a slingshot to launch birds at structures inhabited by green pigs with the goal of destroying all the pigs on the playing field.">
     <link rel="icon" type="image/svg+xml" sizes="32x32" href="./src/assets/images/favicon.svg" />
-    <!-- moteur de dessin p5.js (v1.9.0) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <!-- moteur de physique Matter.js (v0.19.0 stable et minifiée)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <link rel="stylesheet" href="./style.css">
@@ -17,9 +15,15 @@
     <div id="victory-modal">
         <div class="modal-content">
             <h2>Gagné</h2>
-            <button id="next-level-btn">Prochain niveau</button>
+            <button id="next-level-btn">
+                Prochain niveau
+            </button>
         </div>
     </div> 
+
+    <div>
+        <button id="reset-btn" title="Rejouer">🔄</button>
+    </div>
 
     <!-- Sécurité: jeu dans un module ES -->
     <script type="module" src="./src/main.js"></script>

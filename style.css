@@ -46,3 +46,28 @@ canvas {
     background-color: rgb(112, 110, 110); 
     color: white;
 }
+
+#reset-btn {
+  position: fixed;
+  top: 60px;
+  right: 90px;
+  width: 50px;
+  height: 50px;
+  font-size: 26px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+#reset-btn:hover { 
+    background: #ffe9a8; 
+}
+
+@media screen and (min-width: 1300px) {
+    #reset-btn {
+        top: 250px;
+        right: 450px;
+        }
+}
