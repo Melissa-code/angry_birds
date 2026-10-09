@@ -1,18 +1,17 @@
-
 {
     "name": "level-1",
     "entities": [
-        { "type": "ground", "x": 600, "y": 585, "width": 1200, "height": 30, "color": "#005c00" },
+        { "type": "ground", "x": 600, "y": 485, "width": 1200, "height": 30, "color": "#005c00" },
 
         { "type": "block", "x": 10,   "y": 0, "width": 20, "height": 1600, "color": "#983628", "isStatic": true },
         { "type": "block", "x": 1190, "y": 0, "width": 20, "height": 1600, "color": "#983628", "isStatic": true },
 
-        { "type": "bird", "x": 160, "y": 400, "radius": 15, "color": "#ff0000", "isStatic": true }, 
-        { "type": "bird", "x": 160, "y": 400, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 400, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "block", "x": 160, "y": 395, "width": 30, "height": 150, "color": "#983628", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
 
-        { "type": "pig", "x": 700,  "y": 52, "radius": 18,"color": "#3ec300" },
-        { "type": "block", "x": 700, "y": 320, "width": 20, "height": 300, "color": "#983628", "isStatic": false }
-    ]   
+        { "type": "block", "x": 700, "y": 420, "width": 30, "height": 100, "color": "#983628", "isStatic": true },
+        { "type": "pig", "x": 700, "y": 352, "radius": 18, "color": "#3ec300" }
+    ]
 }
-

@@ -19,6 +19,7 @@ export class Game {
         this.isDragging = false; 
         this.startingBirdPosition = null;
         this.currentLevel = 0; 
+        this.world.score = 0; 
 
         const nextLevelBtn = document.querySelector('#next-level-btn');
         if (nextLevelBtn) {
@@ -34,6 +35,7 @@ export class Game {
         this.entities = await loadLevelAsync(currentLevel); // return entities[]
         this.bodies = this.entities.map(entity => entity.body);
         this.world.addBodies(this.bodies); //ajoute les bodies dans le monde physique
+        this.hasWon = false;
 
         // 3 birds[]
         this.birds = this.entities.filter(
@@ -45,38 +47,33 @@ export class Game {
 
         this.world.run();
 
-
         // collision detection between pig and ground
         Matter.Events.on(this.world.engine,'collisionStart', (event) => {
             const pairs = event.pairs;
 
             pairs.forEach(pair => {
-                const { bodyA, bodyB } = pair;
+                const { bodyA, bodyB } = pair; 
+            
                 const pig = this.detectCollision(bodyA, bodyB, 'pig');
-
-                if (pig) {
+                if (pig && pig.isActive) {
                     pig.isActive = false; // le cochon est touché
+                    this.world.score += 100;
                 } 
+
                 const bird = this.detectCollision(bodyA, bodyB, 'bird');
-                if (bird) {
-                    console.log("bird" , bird)
-                }
                 if (bird && bird.isActive) {
                     bird.isActive = false; // l'oiseau est touché
-                    console.log('L\'oiseau est touché !');
                     this.addNextBird();
                 }
             });
 
             this.gameOver();
         });
-
     }
 
     detectCollision(bodyA, bodyB, animal){
         if ((bodyA.label === 'ground' && bodyB.label === animal) 
             || (bodyA.label === animal && bodyB.label === 'ground')) {
-            console.log('Collision entre ' + animal + ' et le terrain !');
 
             if (bodyA.label === animal) {
                 return bodyA; // le cochon est touché
@@ -104,7 +101,8 @@ export class Game {
 
         if (this.currentIndexBird >= this.birds.length - 1 && activePigs.length > 0) {
             console.log('GAME OVER !')
-        } else if (activePigs.length === 0) {
+        } else if (activePigs.length === 0 && !this.hasWon) {
+            this.hasWon = true;
             console.log('Tous les cochons ont été touchés ! GAGNE !');
             // afficher un message de victoire ou passer au niveau suivant
             this.showVictoryMessage(); 
@@ -112,7 +110,6 @@ export class Game {
     }
 
     showVictoryMessage() {
-        console.log("on a gagné !")
         const victoryModal = document.querySelector('#victory-modal');
         
         if (victoryModal) {
@@ -198,6 +195,8 @@ export class Game {
 
     /**
      * récupère la position de la souris par rapport au canvas
+     * non plus coin supérieur gauche de la fenêtre 
+     * mais coin supérieur gauche du canvas
      */
     #getMousePosition(event) {
         const canvas = this.container.querySelector('canvas');
