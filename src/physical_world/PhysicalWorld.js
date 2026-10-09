@@ -13,6 +13,7 @@ export default class PhysicalWorld {
         this.height = height;
         this.container = container;// pour add nv element dans le DOM
         this.birds = []; // 3 oiseaux à lancer
+        this.birdNumber = 1;
         this.score = 0;
 
         this.engine = Engine.create();
@@ -35,8 +36,10 @@ export default class PhysicalWorld {
         Matter.Events.on(this.render, 'afterRender', () => {
             const ctx = this.render.context;
             ctx.fillStyle = 'black';
-            ctx.font = 'bold 24px sans-serif';
-            ctx.fillText('Score : ' + this.score, 40, 40);
+            ctx.font = 'bold 20px sans-serif';
+            ctx.fillText(
+                'Oiseau n° ' + this.birdNumber + ' - Score : ' + this.score, 40, 40
+            );
         });
     }
 

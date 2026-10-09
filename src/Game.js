@@ -89,6 +89,7 @@ export class Game {
 
         if (this.currentIndexBird < this.birds.length) {
             this.currentBird = this.birds[this.currentIndexBird];
+            this.world.birdNumber = this.currentIndexBird + 1; 
             this.world.addNextBird(this.currentBird.body); // monde phys
         } else {
             console.log('Il n\'y a plus d\'oiseaux');
