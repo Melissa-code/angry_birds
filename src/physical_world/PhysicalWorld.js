@@ -16,6 +16,8 @@ export default class PhysicalWorld {
         this.birdNumber = 1;
         this.score = 0;
         this.nextLevel = 1; 
+        this.lastImage = 0; // pour ralentir le rendu à 30 img/sec
+        this.interval = 1000 / 30;  // 30 img/s ->33,33 ms
 
         this.engine = Engine.create();
 
@@ -27,22 +29,21 @@ export default class PhysicalWorld {
                 height: this.height,
                 wireframes: false, //par défaut Matter.js n'affiche aucune couleur
                 background: 'rgba(19, 209, 255, 0.2)', // ciel
-                showAngleIndicator: true,
-                showCollisions: true,
-                showVelocity: true
+                showAngleIndicator: false,
+                showCollisions: false,
+                showVelocity: false
             }
         });
        
-        // Score design sur canvas 
+        // Score design sur canvas afficé après le rendu de Matter.js
         Matter.Events.on(this.render, 'afterRender', () => {
             this.refreshZoneInfos();
         });
     }
 
+    // score , nb oiseau dispo, level
     refreshZoneInfos() {
-        console.log('Refresh zone infos index oiseau affichage ', this.birdNumber);
         const ctx = this.render.context;
-        console.log('context : ', ctx);
         ctx.fillStyle = 'black';
         ctx.font = 'bold 20px sans-serif';
         ctx.fillText(
@@ -92,11 +93,30 @@ export default class PhysicalWorld {
         return pigs;
     }
 
+    // 30 img/sec au lieu de 60 (Render.run(this.render))
+    slowFrame(now) {
+        // appartient à window.requestAnimationFrame() 
+        // avant de dessiner l'ecran, appel la fonction
+        requestAnimationFrame( (time)=> this.slowFrame(time)); 
+    
+        // nothing 
+        if ((now - this.lastImage) < this.interval) return; 
+        
+        this.lastImage = now;
+
+        // update engine & render the world
+        Matter.Engine.update(this.engine, this.interval); 
+        Matter.Render.world(this.render);  
+    }
+
+
     // run simulation (gravity, collisions, movement.....)
     run() {
-        Render.run(this.render);
+        // Render.run(this.render);
+        // const runner = Runner.create();
+        // Runner.run(runner, this.engine);
 
-        const runner = Runner.create();
-        Runner.run(runner, this.engine);
+        // custom run() to slow down the rendering to 30 img/sec
+        requestAnimationFrame( (time)=> this.slowFrame(time)); 
     }
 }
