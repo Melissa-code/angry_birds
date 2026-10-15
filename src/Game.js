@@ -21,9 +21,15 @@ export class Game {
         this.currentLevel = 0; 
         this.world.score = 0; 
 
+        // bind(this) pour garder Game dans this sinon this = bouton
         const nextLevelBtn = document.querySelector('#next-level-btn');
         if (nextLevelBtn) {
             nextLevelBtn.addEventListener('click', this.closeModal.bind(this));
+        }
+
+        const resetBtn = document.querySelector('#reset-btn-modal');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', this.restartLevel.bind(this));
         }
     }
   
@@ -146,6 +152,22 @@ export class Game {
         this.world.birdNumber = 1;
         this.currentBird = null; 
         this.init(nextLevel); 
+        this.world.refreshZoneInfos();
+    }
+
+    restartLevel() {
+        const victoryModal = document.querySelector('#victory-modal');
+        victoryModal.style.display = 'none';
+        
+        this.world.clear(); 
+
+        this.currentIndexBird = 0;
+        this.world.birdNumber = 1;
+        this.currentBird = null; 
+
+        console.log('restartLevel', this.currentLevel);
+        this.init(this.currentLevel); 
+
         this.world.refreshZoneInfos();
     }
 
