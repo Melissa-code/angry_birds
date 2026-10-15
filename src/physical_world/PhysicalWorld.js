@@ -95,8 +95,8 @@ export default class PhysicalWorld {
 
     // 30 img/sec au lieu de 60 (Render.run(this.render))
     slowFrame(now) {
-        // appartient à window.requestAnimationFrame() 
-        // avant de dessiner l'ecran, appel la fonction
+        // appartient à window.requestAnimationFrame() JS natif
+        // navigateur appelle slowFrame() à chaque refresh de 
         requestAnimationFrame( (time)=> this.slowFrame(time)); 
     
         // nothing 
@@ -104,9 +104,9 @@ export default class PhysicalWorld {
         
         this.lastImage = now;
 
-        // update engine & render the world
-        Matter.Engine.update(this.engine, this.interval); 
-        Matter.Render.world(this.render);  
+        // engine is a controller that manages updating the simulation of the world
+        Matter.Engine.update(this.engine, this.interval); // met à jour engine (positions en mémoire)
+        Matter.Render.world(this.render);  //redessine
     }
 
 

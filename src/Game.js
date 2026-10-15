@@ -96,7 +96,10 @@ export class Game {
             this.world.refreshZoneInfos();
         } else {
             console.log('Il n\'y a plus d\'oiseaux');
-            this.showGameOverMessage();
+            const activePigs = this.world.getPigs().filter(pig => pig.isActive);
+            if (activePigs.length > 0 && !this.hasWon) {
+                this.showMessage('lose');
+            }
         }
     }
 
@@ -104,40 +107,33 @@ export class Game {
         const pigs = this.world.getPigs(); 
         const activePigs = pigs.filter(pig => pig.isActive);
 
-        // if (this.currentIndexBird >= this.birds.length - 1 && activePigs.length > 0) {
-        //     console.log('GAME OVER !')
-
         // Tous les cochons ont été touchés
         if (activePigs.length === 0 && !this.hasWon) {
             this.hasWon = true;
     
-            // afficher un message de victoire et passer au niveau suivant
-            this.showVictoryMessage(); 
+            this.showMessage('win');
         }
     }
 
-    showVictoryMessage() {
+    showMessage(typeMessage) {
         const modal = document.querySelector('#victory-modal');
         const nextLevelBtn = document.querySelector('#next-level-btn');
-
-        if (modal && nextLevelBtn) {
-            modal.querySelector('h2').textContent = '🎉 Gagné';
-            modal.style.display = 'flex';
-            nextLevelBtn.style.display = 'inline-block';
-            nextLevelBtn.textContent = 'Prochain niveau';
-        }
-    }
-
-    showGameOverMessage() {
-        const modal = document.querySelector('#victory-modal');
         const resetBtn = document.querySelector('#reset-btn-modal');
 
-        if (modal && resetBtn) {
-            modal.querySelector('h2').textContent = '💀 Game Over';
-            modal.style.display = 'flex';
-            resetBtn.style.display = 'inline-block';
-            resetBtn.textContent = 'Rejouer';
+        if (!modal || !nextLevelBtn || !resetBtn) {
+            console.error('Il manque des éléments dans leDOM');
+            return;
         }
+
+        const win = (typeMessage === 'win');
+
+        modal.querySelector('h2').textContent = win ? '🎉 Gagné' : '💀 Game Over';
+        nextLevelBtn.textContent = 'Prochain niveau';
+        resetBtn.textContent = 'Rejouer';
+
+        nextLevelBtn.style.display = win ? 'inline-block' : 'none';
+        resetBtn.style.display = win ? 'none' : 'inline-block';
+        modal.style.display = 'flex';
     }
 
     loadNextLevel() {
@@ -199,6 +195,7 @@ export class Game {
                 this.currentBird.body.position.y
             );
 
+            // active le drag
             (distance < this.currentBird.body.circleRadius) ? this.isDragging = true 
             : console.log('clic en dehors de l\'oiseau');
         });
