@@ -16,7 +16,15 @@ export class Bird extends Entity {
         isStatic: isStatic,
         restitution: 0.7, // rebondissement
         density: 0.4, // densité
-        render: { fillStyle: this.color }
+        render: { 
+          fillStyle: this.color,
+          sprite: {
+            texture: './src/assets/images/bird.svg',
+            xScale: 0.3,
+            yScale: 0.3,
+
+          }
+         }
       }
     );
     this.body.label = 'bird'; // label pour identifier le corps

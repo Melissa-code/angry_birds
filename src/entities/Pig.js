@@ -14,7 +14,14 @@ export class Pig extends Entity {
       { 
         restitution: 0.1, //moins de rebondissement que l'oiseau et mois dense
         density: 0.001,
-        render: { fillStyle: this.color }
+        render: { 
+          fillStyle: this.color,
+          sprite: {
+            texture: './src/assets/images/pig.png',
+            xScale: 0.4,
+            yScale: 0.4,
+          }
+        }
       }
     );
     this.body.label = 'pig'; // label pour identifier le corps

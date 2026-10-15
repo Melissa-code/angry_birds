@@ -17,7 +17,7 @@ export default class PhysicalWorld {
         this.score = 0;
         this.nextLevel = 1; 
         this.lastImage = 0; // pour ralentir le rendu à 30 img/sec
-        this.interval = 1000 / 30;  // 30 img/s ->33,33 ms
+        this.interval = 1000 / 50;  // 30 img/s ->33,33 ms
 
         this.engine = Engine.create();
 
@@ -28,7 +28,8 @@ export default class PhysicalWorld {
                 width: this.width,
                 height: this.height,
                 wireframes: false, //par défaut Matter.js n'affiche aucune couleur
-                background: 'rgba(19, 209, 255, 0.2)', // ciel
+                // background: 'rgba(19, 209, 255, 0.2)', // ciel
+                background: './src/assets/images/fonds.jpeg', 
                 showAngleIndicator: false,
                 showCollisions: false,
                 showVelocity: false
@@ -96,7 +97,7 @@ export default class PhysicalWorld {
     // 30 img/sec au lieu de 60 (Render.run(this.render))
     slowFrame(now) {
         // appartient à window.requestAnimationFrame() JS natif
-        // navigateur appelle slowFrame() à chaque refresh de 
+        // navigateur appelle slowFrame() à chaque refresh  
         requestAnimationFrame( (time)=> this.slowFrame(time)); 
     
         // nothing 

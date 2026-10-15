@@ -13,18 +13,20 @@ export async function loadLevelAsync(levelNumber) {
     
     const levelData = await response.json();
 
-    return levelData.entities.map(
-      data => EntityFactory.createEntity(
-        data.type, 
-        data.x, 
-        data.y, 
-        data.radius, 
-        data.width, 
-        data.height, 
-        data.color,
-        data.isStatic
-      )
-    ); 
+    return [
+      levelData.background, 
+      levelData.entities.map(
+        data => EntityFactory.createEntity(
+          data.type, 
+          data.x, 
+          data.y, 
+          data.radius, 
+          data.width, 
+          data.height, 
+          data.color,
+          data.isStatic
+        )
+    )]; 
 
   } catch (error) {
     console.error(

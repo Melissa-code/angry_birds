@@ -38,9 +38,10 @@ export class Game {
      */
     async init(currentLevel) {
         this.currentLevel = currentLevel; // pour mémoriser le niveau en cours
-        this.entities = await loadLevelAsync(currentLevel); // return entities[]
+        [this.background, this.entities] = await loadLevelAsync(currentLevel); // return background & entities[]
         this.bodies = this.entities.map(entity => entity.body);
         this.world.addBodies(this.bodies); //ajoute les bodies dans le monde physique
+        this.displayBackgroundImage(); 
         this.hasWon = false;
         this.world.refreshZoneInfos();
 
@@ -157,6 +158,7 @@ export class Game {
 
     restartLevel() {
         const victoryModal = document.querySelector('#victory-modal');
+
         victoryModal.style.display = 'none';
         
         this.world.clear(); 
@@ -165,16 +167,25 @@ export class Game {
         this.world.birdNumber = 1;
         this.currentBird = null; 
 
-        console.log('restartLevel', this.currentLevel);
         this.init(this.currentLevel); 
-
         this.world.refreshZoneInfos();
     }
 
     closeModal() {
         const victoryModal = document.querySelector('#victory-modal');
+
         victoryModal.style.display = 'none';
         this.loadNextLevel();
+    }
+
+    displayBackgroundImage() {
+        const canvas = this.container.querySelector('canvas');
+
+        if (canvas) {
+            canvas.style.backgroundImage = `url(${this.background})`;
+            canvas.style.backgroundSize = 'cover';
+            canvas.style.backgroundPosition = 'center';
+        }
     }
 
     // --- slingshot --- 
