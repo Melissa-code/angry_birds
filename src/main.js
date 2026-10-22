@@ -8,4 +8,4 @@ document.querySelector('#reset-btn').addEventListener('click', () => {
     location.reload();
 });
 
-// bg img / level
+// add differents birds 

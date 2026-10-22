@@ -19,7 +19,7 @@ export default class PhysicalWorld {
         this.score = 0;
         this.nextLevel = 1; 
         this.lastImage = 0; // pour ralentir le rendu à 30 img/sec
-        this.interval = 1000 / 50;  // 30 img/s ->33,33 ms
+        this.interval = 1000 / 30;  // 30 img/s ->33,33 ms
 
         this.engine = Engine.create();
 
@@ -66,6 +66,7 @@ export default class PhysicalWorld {
         this.birds = birds;
         World.add(this.engine.world, this.birds[0]); 
         World.add(this.engine.world, othersEntities);
+       
     }
 
     addNextBird(birdBody) {
@@ -86,10 +87,13 @@ export default class PhysicalWorld {
     getPigs() {
         const pigs = []; 
         const bodies = Composite.allBodies(this.engine.world); // récupère tous les corps du monde physique
+        let counter = 1; 
 
         for (const body of bodies) {
             if (body.label === 'pig') {
                 pigs.push(body);
+                console.log('pig ' + counter + ': ', body.position.x, body.position.y, body.isActive);
+                counter++;
             }
         }
         return pigs;
@@ -114,11 +118,11 @@ export default class PhysicalWorld {
 
     // run simulation (gravity, collisions, movement.....)
     run() {
-        // Render.run(this.render);
-        // const runner = Runner.create();
-        // Runner.run(runner, this.engine);
+        Render.run(this.render);
+        const runner = Runner.create();
+        Runner.run(runner, this.engine);
 
         // custom run() to slow down the rendering to 30 img/sec
-        requestAnimationFrame( (time)=> this.slowFrame(time)); 
+        // requestAnimationFrame( (time)=> this.slowFrame(time)); 
     }
 }

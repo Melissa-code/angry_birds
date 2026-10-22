@@ -44,12 +44,14 @@ export class Game {
         this.displayBackgroundImage(); 
         this.hasWon = false;
         this.world.refreshZoneInfos();
+        console.log('entities : ', this.entities);
 
         // 3 ou 4 birds[]
         this.birds = this.entities.filter(
             entityFound => entityFound instanceof Bird
         );
         this.currentBird = this.birds[this.currentIndexBird];
+        console.log('currentBird : ', this.currentBird.x, this.currentBird.y);
 
         this.setUpSlingshot(); 
 
@@ -104,6 +106,7 @@ export class Game {
         } else {
             console.log('Il n\'y a plus d\'oiseaux');
             const activePigs = this.world.getPigs().filter(pig => pig.isActive);
+    
             if (activePigs.length > 0 && !this.hasWon) {
                 this.showMessage('lose');
             }
