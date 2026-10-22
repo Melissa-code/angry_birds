@@ -1,6 +1,6 @@
 {
     "name": "level-1",
-    "background": "./src/assets/images/fonds.jpeg",
+    "background": "./src/assets/images/backgrounds/fonds1.png",
     "entities": [
         { "type": "ground", "x": 600, "y": 485, "width": 1200, "height": 30, "color": "#005c00" },
 

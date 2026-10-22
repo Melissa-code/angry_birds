@@ -29,7 +29,7 @@ export default class PhysicalWorld {
                 height: this.height,
                 wireframes: false, //par défaut Matter.js n'affiche aucune couleur
                 // background: 'rgba(19, 209, 255, 0.2)', // ciel
-                background: './src/assets/images/fonds.jpeg', 
+                background: `./src/assets/images/backgrounds/fonds${this.nextLevel}.png`, 
                 showAngleIndicator: false,
                 showCollisions: false,
                 showVelocity: false
