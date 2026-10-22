@@ -8,6 +8,8 @@ const Composite = Matter.Composite;
 
 export default class PhysicalWorld {
 
+    BACKGROUND = './src/assets/images/backgrounds/fonds';
+
     constructor(width, height, container) {
         this.width = width;
         this.height = height;
@@ -28,8 +30,7 @@ export default class PhysicalWorld {
                 width: this.width,
                 height: this.height,
                 wireframes: false, //par défaut Matter.js n'affiche aucune couleur
-                // background: 'rgba(19, 209, 255, 0.2)', // ciel
-                background: `./src/assets/images/backgrounds/fonds${this.nextLevel}.png`, 
+                background: `${this.BACKGROUND}${this.nextLevel}.png`, 
                 showAngleIndicator: false,
                 showCollisions: false,
                 showVelocity: false
