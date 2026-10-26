@@ -1,31 +1,33 @@
 {
-    "name": "level-9",
-    "background": "./src/assets/images/backgrounds/fonds9.png",
+    "name": "level-10",
+    "background": "./src/assets/images/backgrounds/fonds10.png",
     "birdsCount": 5,
     "entities": [
-        { "type": "ground", "x": 600, "y": 485, "width": 1200, "height": 30, "color": "#005c00" },
+        { "type": "ground", "x": 600, "y": 490, "width": 1200, "height": 30, "color": "#005c00" },
+        { "type": "ground", "x": 600, "y": 10, "width": 1200, "height": 30, "color": "#983628" },
+
         { "type": "block", "x": 10,   "y": 0, "width": 50, "height": 1600, "color": "#983628", "isStatic": true },
         { "type": "block", "x": 1190, "y": 0, "width": 100, "height": 1600, "color": "#983628", "isStatic": true },
 
-        { "type": "block", "x": 160, "y": 395, "width": 30, "height": 150, "color": "#983628", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "block", "x": 160, "y": 400, "width": 30, "height": 150, "color": "#983628", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
 
-        { "type": "block", "x": 450, "y": 420, "width": 20, "height": 100, "color": "#983628", "isStatic": true },
+        { "type": "block", "x": 450, "y": 425, "width": 20, "height": 100, "color": "#983628", "isStatic": true },
 
-        { "type": "block", "x": 600, "y": 420, "width": 70, "height": 100, "color": "#983628", "isStatic": false },
-        { "type": "pig",   "x": 600, "y": 352, "radius": 18, "color": "#3ec300" },
+        { "type": "block", "x": 580, "y": 424, "width": 70, "height": 100, "color": "#983628", "isStatic": false },
+        { "type": "pig",   "x": 580, "y": 350, "radius": 18, "color": "#3ec300" },
 
-        { "type": "block", "x": 750, "y": 420, "width": 30, "height": 100, "color": "#983628", "isStatic": false },
-        { "type": "block", "x": 850, "y": 420, "width": 30, "height": 100, "color": "#983628", "isStatic": false },
-        { "type": "block", "x": 800, "y": 360, "width": 150, "height": 20, "color": "#983628", "isStatic": false },
-        { "type": "pig",   "x": 775, "y": 332, "radius": 18, "color": "#3ec300" },
-        { "type": "pig",   "x": 825, "y": 332, "radius": 18, "color": "#3ec300" },
+        { "type": "block", "x": 710, "y": 424, "width": 30, "height": 100, "color": "#983628", "isStatic": false },
+        { "type": "block", "x": 810, "y": 424, "width": 30, "height": 100, "color": "#983628", "isStatic": false },
+        { "type": "block", "x": 760, "y": 363, "width": 150, "height": 20, "color": "#983628", "isStatic": false },
+        { "type": "pig",   "x": 735, "y": 329, "radius": 18, "color": "#3ec300" },
+        { "type": "pig",   "x": 785, "y": 329, "radius": 18, "color": "#3ec300" },
 
-        { "type": "block", "x": 920, "y": 430, "width": 60, "height": 80, "color": "#983628", "isStatic": false },
-        { "type": "pig",   "x": 920, "y": 372, "radius": 18, "color": "#3ec300" }
+        { "type": "block", "x": 930, "y": 424, "width": 60, "height": 100, "color": "#983628", "isStatic": false },
+        { "type": "pig",   "x": 930, "y": 350, "radius": 18, "color": "#3ec300" }
     ]
 }

@@ -3,30 +3,32 @@
     "background": "./src/assets/images/backgrounds/fonds7.png",
     "birdsCount": 4,
     "entities": [
-        { "type": "ground", "x": 600, "y": 485, "width": 1200, "height": 30, "color": "#005c00" },
+        { "type": "ground", "x": 600, "y": 490, "width": 1200, "height": 30, "color": "#005c00" },
+        { "type": "ground", "x": 600, "y": 10, "width": 1200, "height": 30, "color": "#983628" },
+        
         { "type": "block", "x": 10,   "y": 0, "width": 50, "height": 1600, "color": "#983628", "isStatic": true },
         { "type": "block", "x": 1190, "y": 0, "width": 100, "height": 1600, "color": "#983628", "isStatic": true },
 
-        { "type": "block", "x": 160, "y": 395, "width": 30, "height": 150, "color": "#983628", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 300, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "block", "x": 160, "y": 400, "width": 30, "height": 150, "color": "#983628", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
 
-        { "type": "block", "x": 520, "y": 385, "width": 20, "height": 170, "color": "#983628", "isStatic": true },
+        { "type": "block", "x": 520, "y": 390, "width": 20, "height": 170, "color": "#983628", "isStatic": true },
 
-        { "type": "block", "x": 700, "y": 390, "width": 50, "height": 160, "color": "#983628", "isStatic": false },
-        { "type": "pig",   "x": 700, "y": 292, "radius": 18, "color": "#3ec300" },
+        { "type": "block", "x": 640, "y": 394, "width": 50, "height": 160, "color": "#983628", "isStatic": false },
+        { "type": "pig",   "x": 640, "y": 290, "radius": 18, "color": "#3ec300" },
 
-        { "type": "block", "x": 850, "y": 420, "width": 30, "height": 100, "color": "#983628", "isStatic": true },
-        { "type": "block", "x": 950, "y": 420, "width": 30, "height": 100, "color": "#983628", "isStatic": true },
-        { "type": "block", "x": 900, "y": 360, "width": 140, "height": 20, "color": "#983628", "isStatic": false },
-        { "type": "pig",   "x": 900, "y": 332, "radius": 18, "color": "#3ec300" },
+        { "type": "block", "x": 780, "y": 425, "width": 30, "height": 100, "color": "#983628", "isStatic": true },
+        { "type": "block", "x": 880, "y": 425, "width": 30, "height": 100, "color": "#983628", "isStatic": true },
+        { "type": "block", "x": 830, "y": 364, "width": 140, "height": 20, "color": "#983628", "isStatic": false },
+        { "type": "pig",   "x": 830, "y": 330, "radius": 18, "color": "#3ec300" },
 
-        { "type": "block", "x": 1040, "y": 370, "width": 50, "height": 200, "color": "#983628", "isStatic": false },
-        { "type": "pig",   "x": 1040, "y": 252, "radius": 18, "color": "#3ec300" },
+        { "type": "block", "x": 980, "y": 374, "width": 50, "height": 200, "color": "#983628", "isStatic": false },
+        { "type": "pig",   "x": 980, "y": 250, "radius": 18, "color": "#3ec300" },
 
-        { "type": "block", "x": 1135, "y": 420, "width": 50, "height": 100, "color": "#983628", "isStatic": true },
-        { "type": "pig",   "x": 1135, "y": 352, "radius": 18, "color": "#3ec300" }
+        { "type": "block", "x": 1075, "y": 424, "width": 50, "height": 100, "color": "#983628", "isStatic": false },
+        { "type": "pig",   "x": 1075, "y": 350, "radius": 18, "color": "#3ec300" }
     ]
 }

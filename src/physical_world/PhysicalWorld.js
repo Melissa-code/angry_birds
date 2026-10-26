@@ -47,11 +47,11 @@ export default class PhysicalWorld {
     refreshZoneInfos() {
         const ctx = this.render.context;
         ctx.fillStyle = 'black';
-        ctx.font = 'bold 20px sans-serif';
+        ctx.font = 'bold 18px sans-serif';
         ctx.fillText(
-            'Oiseau ' + this.birdNumber + ' - Score : ' + this.score, 40, 40
+            'Oiseau ' + this.birdNumber + ' - Score : ' + this.score, 50, 60
         );
-        ctx.fillText('Niveau ' + this.nextLevel, 40, 70);
+        ctx.fillText('Niveau ' + this.nextLevel, 50, 90);
     }
 
     filterBirdsEntities(bodies) {
