@@ -51,13 +51,10 @@ export class Game {
             entityFound => entityFound instanceof Bird
         );
         this.currentBird = this.birds[this.currentIndexBird];
-        console.log('currentBird : ', this.currentBird.x, this.currentBird.y);
-
         this.setUpSlingshot(); 
-
         this.world.run();
 
-        // collision detection between pig and ground
+        // collision detection between pig/bird and ground
         Matter.Events.on(this.world.engine,'collisionStart', (event) => {
             const pairs = event.pairs;
 

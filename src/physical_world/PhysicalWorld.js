@@ -66,7 +66,6 @@ export default class PhysicalWorld {
         this.birds = birds;
         World.add(this.engine.world, this.birds[0]); 
         World.add(this.engine.world, othersEntities);
-       
     }
 
     addNextBird(birdBody) {
