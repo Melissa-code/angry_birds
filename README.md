@@ -3,6 +3,12 @@
 Version simplifiée du jeu développé ici en JavaScript vanilla, utilisant la 
 physique 2D et un rendu graphique dynamique.
 
+[Jouer en ligne](https://angry-bird-smash.netlify.app/)
+
+### Aperçu 
+
+<img alt="jeu d'Angry Bird" src="./src/assets/images/game_screen.png" width="500">
+
 
 ## 1. Contexte 
 

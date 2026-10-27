@@ -42,5 +42,8 @@
 ## 6. Habillage graphique (polish)
 
 - Remplacer le rond rouge par une image d'oiseau
-- Remplacer les rectangles gris par des textures de caisses en bois
 - Ajouter un fond d'écran (paysage)
+
+## 7. Changer les oiseaux 
+
+- Au niveau 3, l'oiseau est jaune et accélère en plein vol 
