@@ -14,8 +14,8 @@ export class YellowBird extends Bird {
       this.radius, 
       {
         isStatic: isStatic,
-        restitution: 0.7, // rebondissement
-        density: 0.4,     // densité
+        restitution: 0.3, // rebondissement
+        density: 0.2,     // densité
         render: { 
           fillStyle: this.color,
           sprite: {
@@ -33,13 +33,6 @@ export class YellowBird extends Bird {
 
   // accélère en ligne droite (multiplie la vitesse par 2)
   usePower() {
-    if (!this.body.isLaunched || this.powerUsed) return; 
-
-    this.powerUsed = true;
-
-    Matter.Body.setVelocity(this.body, {
-      x: this.body.velocity.x * 2,
-      y: this.body.velocity.y * 2  
-    });
+     //
   }
 }

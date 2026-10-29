@@ -91,7 +91,6 @@ export default class PhysicalWorld {
         for (const body of bodies) {
             if (body.label === 'pig') {
                 pigs.push(body);
-                console.log('pig ' + counter + ': ', body.position.x, body.position.y, body.isActive);
                 counter++;
             }
         }

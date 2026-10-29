@@ -9,3 +9,4 @@ document.querySelector('#reset-btn').addEventListener('click', () => {
 });
 
 // add differents birds 
+// detecte coll oiseau noir avec autre obj pour exploser(dans tous les sens )

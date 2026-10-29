@@ -1,6 +1,7 @@
 import PhysicalWorld from './physical_world/PhysicalWorld.js';
 import { loadLevelAsync } from './levels/level_loader.js';
 import { Bird } from './entities/Bird.js';
+import { YellowBird } from './entities/YellowBird.js';
 
 const Bodies = Matter.Bodies;
 
@@ -31,6 +32,7 @@ export class Game {
         if (resetBtn) {
             resetBtn.addEventListener('click', this.restartLevel.bind(this));
         }
+
     }
   
     /**
@@ -78,6 +80,51 @@ export class Game {
             this.gameOver();
         });
     }
+
+    explode(currentBird) {
+        let x = currentBird.body.position.x; 
+        let y = currentBird.body.position.y;
+        let size = currentBird.body.circleRadius;
+
+        const birdFragmentsImages = [
+            './src/assets/images/birdBlack_haut_gauche.png',
+            './src/assets/images/birdBlack_haut_droite.png',
+            './src/assets/images/birdBlack_bas_gauche.png',
+            './src/assets/images/birdBlack_bas_droite.png',
+        ]
+
+        // supp 
+        Matter.Bird.remove(this.world.engine.world, currentBird.body);
+
+        const positions = [
+            { x: x - size/2, y: y - size/2 },
+            { x: x + size/2, y: y - size/2 },
+            { x: x - size/2, y: y + size/2 },
+            { x: x + size/2, y: y + size/2 }
+        ]
+
+        for (let i = 0; i < 4; i++) {
+            const fragment = Bodies.rectangle(
+                positions[i].x,
+                positions[i].y,
+                size,
+                size,
+                {
+                    restitution: 0.5,
+                    density: 0.1,
+                    render: {
+                        sprite: {
+                            texture: birdFragmentsImages[i],
+                            xScale: 0.3,
+                            yScale: 0.3
+                        }
+                    }
+                }
+            );
+            Matter.World.add(this.world.engine.world, fragment);
+        }
+    }
+
 
     detectCollision(bodyA, bodyB, animal){
         if ((bodyA.label === 'ground' && bodyB.label === animal) 
@@ -194,12 +241,18 @@ export class Game {
         Matter.Body.setStatic(this.currentBird.body, false); 
         const deltaX = this.startingBirdPosition.x - this.currentBird.body.position.x;
         const deltaY = this.startingBirdPosition.y - this.currentBird.body.position.y;
+        let speedMultiplier = 0.25; // Ajustez ce facteur pour contrôler la vitesse de lancement
+
+        if (this.currentBird instanceof YellowBird) {
+            speedMultiplier = 0.5;
+        }
         
         const launchVelocity = {
-            x: deltaX * 0.25, // ajuste la vitesse de lancement selon les besoins
-            y: deltaY * 0.25
+            x: deltaX * speedMultiplier,
+            y: deltaY * speedMultiplier
         };
 
+    
         Matter.Body.setVelocity(this.currentBird.body, launchVelocity); 
     }
 
