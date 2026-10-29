@@ -31,4 +31,8 @@ export class Bird extends Entity {
     this.body.isActive = true; 
     this.body.isLaunched = false;
   }
+
+  usePower() {
+    // méthode abstraite 
+  }
 }

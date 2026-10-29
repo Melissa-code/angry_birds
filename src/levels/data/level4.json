@@ -10,9 +10,9 @@
         { "type": "block", "x": 1190, "y": 0, "width": 100, "height": 1600, "color": "#983628", "isStatic": true },
 
         { "type": "block", "x": 160, "y": 400, "width": 30, "height": 150, "color": "#983628", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
+        { "type": "bird", "kind": "yellow", "x": 160, "y": 305, "radius": 15, "color": "#ffd800", "isStatic": true },
+        { "type": "bird", "kind": "yellow", "x": 160, "y": 305, "radius": 15, "color": "#ffd800", "isStatic": true },
+        { "type": "bird", "kind": "yellow", "x": 160, "y": 305, "radius": 15, "color": "#ffd800", "isStatic": true },
 
         { "type": "block", "x": 500, "y": 395, "width": 20, "height": 160, "color": "#983628", "isStatic": true },
 

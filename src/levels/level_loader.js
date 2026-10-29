@@ -24,7 +24,8 @@ export async function loadLevelAsync(levelNumber) {
           data.width, 
           data.height, 
           data.color,
-          data.isStatic
+          data.isStatic,
+          data.kind
         )
     )]; 
 
