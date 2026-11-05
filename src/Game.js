@@ -3,6 +3,7 @@ import { loadLevelAsync } from './levels/level_loader.js';
 import { Bird } from './entities/Bird.js';
 import { YellowBird } from './entities/YellowBird.js';
 import { BlackBird } from './entities/BlackBird.js';
+import { BlueBird } from './entities/BlueBird.js';
 
 const Bodies = Matter.Bodies;
 
@@ -66,20 +67,18 @@ export class Game {
             pairs.forEach(pair => {
                 const { bodyA, bodyB } = pair; 
 
-                let blackBirdBody = null; 
-                // if (this.currentBird instanceof BlackBird) {
+                let blueBirdBody = null; 
 
-                //     blackBirdBody = this.currentBird.body;
-                //     if (bodyA === blackBirdBody || bodyB === blackBirdBody) {
-                //         console.log('black bird collision detected');
-                //         // (return) exit to avoid multiple explosions
-                //         blackBirdBody.isActive = false; // l'oiseau est touché
-                //         this.explode(this.currentBird);
-                //         this.addNextBird();
-                //         return; 
-                //     }
-                // } 
-                
+                if (this.currentBird instanceof BlueBird) {
+                    blueBirdBody = this.currentBird.body;
+                    if (bodyA === blueBirdBody || bodyB === blueBirdBody) {
+                        console.log('blue bird collision detected');
+                        blueBirdBody.isActive = false; // l'oiseau est touché
+                        // this.explode(this.currentBird);
+                        this.addNextBird();
+                        return; 
+                    }
+                } 
                 
                 const pig = this.detectCollision(bodyA, bodyB, 'pig');
                 if (pig && pig.isActive) {

@@ -1,6 +1,7 @@
 import { Bird } from './Bird.js';
 import { YellowBird } from './YellowBird.js';
 import { BlackBird } from './BlackBird.js';
+import { BlueBird } from './BlueBird.js';
 import { Pig } from './Pig.js';
 import { Ground } from './Ground.js';
 import { Block } from './Block.js';
@@ -19,6 +20,8 @@ export class EntityFactory {
             return new YellowBird(x, y, radius, color, isStatic);
           case 'black':
             return new BlackBird(x, y, radius, color, isStatic);
+          case 'blue':
+            return new BlueBird(x, y, radius, color, isStatic);
         }
       case 'pig':
         return new Pig(x, y, radius, color);
