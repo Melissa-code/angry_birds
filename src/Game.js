@@ -2,6 +2,7 @@ import PhysicalWorld from './physical_world/PhysicalWorld.js';
 import { loadLevelAsync } from './levels/level_loader.js';
 import { Bird } from './entities/Bird.js';
 import { YellowBird } from './entities/YellowBird.js';
+import { BlackBird } from './entities/BlackBird.js';
 
 const Bodies = Matter.Bodies;
 
@@ -32,13 +33,13 @@ export class Game {
         if (resetBtn) {
             resetBtn.addEventListener('click', this.restartLevel.bind(this));
         }
-
     }
   
     /**
      * règle du langage constructeur doit toujours retourner l'objet immédiatement et synchrone
      */
     async init(currentLevel) {
+        console.log('niveau demandé :', currentLevel);
         this.currentLevel = currentLevel; // pour mémoriser le niveau en cours
         [this.background, this.entities] = await loadLevelAsync(currentLevel); // return background & entities[]
         this.bodies = this.entities.map(entity => entity.body);
@@ -60,9 +61,26 @@ export class Game {
         Matter.Events.on(this.world.engine,'collisionStart', (event) => {
             const pairs = event.pairs;
 
+            // console.log("currentbird", this.currentBird);
+
             pairs.forEach(pair => {
                 const { bodyA, bodyB } = pair; 
-            
+
+                let blackBirdBody = null; 
+                // if (this.currentBird instanceof BlackBird) {
+
+                //     blackBirdBody = this.currentBird.body;
+                //     if (bodyA === blackBirdBody || bodyB === blackBirdBody) {
+                //         console.log('black bird collision detected');
+                //         // (return) exit to avoid multiple explosions
+                //         blackBirdBody.isActive = false; // l'oiseau est touché
+                //         this.explode(this.currentBird);
+                //         this.addNextBird();
+                //         return; 
+                //     }
+                // } 
+                
+                
                 const pig = this.detectCollision(bodyA, bodyB, 'pig');
                 if (pig && pig.isActive) {
                     pig.isActive = false; // le cochon est touché
@@ -73,18 +91,33 @@ export class Game {
                 const bird = this.detectCollision(bodyA, bodyB, 'bird');
                 if (bird && bird.isActive) {
                     bird.isActive = false; // l'oiseau est touché
+
                     this.addNextBird();
                 }
             });
 
             this.gameOver();
         });
+
+        if (this.currentBird instanceof BlackBird) {
+            document.addEventListener('keydown', (event) => {
+                console.log(`Touche pressée : ${event.key}`);
+                let blackBirdBody = this.currentBird.body;
+                blackBirdBody.isActive = false; // l'oiseau est touché
+                this.explode(this.currentBird);
+                this.addNextBird();
+                return; 
+            });
+        }
     }
 
+    /**
+     * black bird -> into 4 fragments
+     */
     explode(currentBird) {
         let x = currentBird.body.position.x; 
         let y = currentBird.body.position.y;
-        let size = currentBird.body.circleRadius;
+        let size = currentBird.body.circleRadius; // rayon => size/2 diametre 
 
         const birdFragmentsImages = [
             './src/assets/images/birdBlack_haut_gauche.png',
@@ -93,9 +126,6 @@ export class Game {
             './src/assets/images/birdBlack_bas_droite.png',
         ]
 
-        // supp 
-        Matter.Bird.remove(this.world.engine.world, currentBird.body);
-
         const positions = [
             { x: x - size/2, y: y - size/2 },
             { x: x + size/2, y: y - size/2 },
@@ -103,14 +133,26 @@ export class Game {
             { x: x + size/2, y: y + size/2 }
         ]
 
+        const vitesses = [
+            { x: -5, y: -5 }, 
+            { x:  5, y: -5 }, 
+            { x: -5, y:  5 },  
+            { x:  5, y:  5 },  
+        ];
+
+        // remove bird
+        Matter.World.remove(this.world.engine.world, currentBird.body);
+        console.log('black bird removed from world :', currentBird.body);
+
+        // 4 fragments
         for (let i = 0; i < 4; i++) {
-            const fragment = Bodies.rectangle(
+            const fragment = Matter.Bodies.rectangle(
                 positions[i].x,
                 positions[i].y,
                 size,
                 size,
                 {
-                    restitution: 0.5,
+                    restitution: 0.1,
                     density: 0.1,
                     render: {
                         sprite: {
@@ -121,10 +163,13 @@ export class Game {
                     }
                 }
             );
+
+            // explosion des fragments dans toutes les directions
+            Matter.Body.setVelocity(fragment, vitesses[i]);
+        
             Matter.World.add(this.world.engine.world, fragment);
         }
     }
-
 
     detectCollision(bodyA, bodyB, animal){
         if ((bodyA.label === 'ground' && bodyB.label === animal) 
@@ -245,6 +290,10 @@ export class Game {
 
         if (this.currentBird instanceof YellowBird) {
             speedMultiplier = 0.5;
+        }
+
+        if (this.currentBird instanceof BlackBird) {
+            speedMultiplier = 0.2;
         }
         
         const launchVelocity = {

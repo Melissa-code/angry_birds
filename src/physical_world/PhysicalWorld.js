@@ -7,7 +7,7 @@ const Bodies = Matter.Bodies;
 const Composite = Matter.Composite;
 
 export default class PhysicalWorld {
-
+    
     BACKGROUND = './src/assets/images/backgrounds/fonds';
 
     constructor(width, height, container) {
