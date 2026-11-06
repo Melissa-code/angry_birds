@@ -49,67 +49,20 @@ export class Game {
         this.displayBackgroundImage(); 
         this.hasWon = false;
         this.world.refreshZoneInfos();
-        console.log('entities : ', this.entities);
 
         // 3 ou 4 birds[]
         this.birds = this.entities.filter(
             entityFound => entityFound instanceof Bird
         );
         this.currentBird = this.birds[this.currentIndexBird];
+
         this.slingshot = new Slingshot(this.container, this.currentBird);
-        // this.setUpSlingshot(); 
+
         this.world.run();
 
-        // collision detection between pig/bird and ground
-        Matter.Events.on(this.world.engine,'collisionStart', (event) => {
-            const pairs = event.pairs;
-            pairs.forEach(pair => {
-                const { bodyA, bodyB } = pair; 
-
-                // BlueBird collision detection
-                let blueBirdBody = null; 
-                if (this.currentBird instanceof BlueBird) {
-                    blueBirdBody = this.currentBird.body;
-                    if (bodyA === blueBirdBody || bodyB === blueBirdBody) {
-                        console.log('blue bird collision detected');
-                        blueBirdBody.isActive = false; // l'oiseau est touché
-                        this.splitIntoThreeBirds(this.currentBird);
-                        this.addNextBird();
-                        return; 
-                    }
-                } 
-                
-                // ground/pig -> score +100
-                const pig = this.detectCollision(bodyA, bodyB, 'pig'); 
-                if (pig && pig.isActive) {
-                    pig.isActive = false; // le cochon est touché
-                    this.world.score += 100;
-                    this.world.refreshZoneInfos(); 
-                } 
-
-                // ground/bird -> next bird
-                const bird = this.detectCollision(bodyA, bodyB, 'bird'); 
-                if (bird && bird.isActive) {
-                    bird.isActive = false; // l'oiseau est touché
-
-                    this.addNextBird();
-                }
-            });
-
-            this.gameOver();
-        });
-
-        // BlackBird (event: keydown)
-        if (this.currentBird instanceof BlackBird) {
-            document.addEventListener('keydown', (event) => {
-                console.log(`Touche pressée : ${event.key}`);
-                let blackBirdBody = this.currentBird.body;
-                blackBirdBody.isActive = false; // l'oiseau est touché
-                this.explode(this.currentBird);
-                this.addNextBird();
-                return; 
-            });
-        }
+        // Écouteurs de jeu
+        this.#initCollisions();
+        this.#initKeyboardEvents();
     }
 
     detectCollision(bodyA, bodyB, animal) {
@@ -263,6 +216,63 @@ export class Game {
     }
 
     // ----------- private methods ------------
+
+    #initCollisions() {
+        // collision detection between pig/bird and ground
+        Matter.Events.on(this.world.engine,'collisionStart', (event) => {
+            const pairs = event.pairs;
+            pairs.forEach(pair => {
+                const { bodyA, bodyB } = pair; 
+
+                // BlueBird collision detection
+                let blueBirdBody = null; 
+                if (this.currentBird instanceof BlueBird) {
+                    blueBirdBody = this.currentBird.body;
+                    if (bodyA === blueBirdBody || bodyB === blueBirdBody) {
+                        console.log('blue bird collision detected');
+                        blueBirdBody.isActive = false; // l'oiseau est touché
+                        this.splitIntoThreeBirds(this.currentBird);
+                        this.addNextBird();
+                        return; 
+                    }
+                } 
+                
+                // ground/pig -> score +100
+                const pig = this.detectCollision(bodyA, bodyB, 'pig'); 
+                if (pig && pig.isActive) {
+                    pig.isActive = false; // le cochon est touché
+                    this.world.score += 100;
+                    this.world.refreshZoneInfos(); 
+                } 
+
+                // ground/bird -> next bird
+                const bird = this.detectCollision(bodyA, bodyB, 'bird'); 
+                if (bird && bird.isActive) {
+                    bird.isActive = false; // l'oiseau est touché
+
+                    this.addNextBird();
+                }
+            });
+
+            this.gameOver();
+        });
+    }
+
+    /**
+     * BlackBird (event: keydown)
+     */
+    #initKeyboardEvents() {
+        if (this.currentBird instanceof BlackBird) {
+            document.addEventListener('keydown', (event) => {
+                console.log(`Touche pressée : ${event.key}`);
+                let blackBirdBody = this.currentBird.body;
+                blackBirdBody.isActive = false; // l'oiseau est touché
+                this.explode(this.currentBird);
+                this.addNextBird();
+                return; 
+            });
+        }
+    }
 
     #splitBirdIntoFragments(currentBird, count, images, positions, speeds, shape) {
         // remove current bird from the world
