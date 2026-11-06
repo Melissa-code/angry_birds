@@ -1,9 +1,7 @@
 const Engine = Matter.Engine;
 const World = Matter.World;
-const Body = Matter.Body;
 const Runner = Matter.Runner;
 const Render = Matter.Render;
-const Bodies = Matter.Bodies;
 const Composite = Matter.Composite;
 
 export default class PhysicalWorld {

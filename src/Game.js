@@ -111,120 +111,6 @@ export class Game {
         }
     }
 
-    /**
-     * black bird -> into 4 fragments
-     */
-    explode(currentBird) {
-        let x = currentBird.body.position.x; 
-        let y = currentBird.body.position.y;
-        let size = currentBird.body.circleRadius; // rayon => size/2 diametre 
-
-        const birdFragmentsImages = [
-            './src/assets/images/birdBlack_haut_gauche.png',
-            './src/assets/images/birdBlack_haut_droite.png',
-            './src/assets/images/birdBlack_bas_gauche.png',
-            './src/assets/images/birdBlack_bas_droite.png',
-        ]
-
-        const positions = [
-            { x: x - size/2, y: y - size/2 },
-            { x: x + size/2, y: y - size/2 },
-            { x: x - size/2, y: y + size/2 },
-            { x: x + size/2, y: y + size/2 }
-        ]
-
-        const vitesses = [
-            { x: -5, y: -5 }, 
-            { x:  5, y: -5 }, 
-            { x: -5, y:  5 },  
-            { x:  5, y:  5 },  
-        ];
-
-        // remove bird
-        Matter.World.remove(this.world.engine.world, currentBird.body);
-        console.log('black bird removed from world :', currentBird.body);
-
-        // 4 fragments
-        for (let i = 0; i < 4; i++) {
-            const fragment = Matter.Bodies.rectangle(
-                positions[i].x,
-                positions[i].y,
-                size,
-                size,
-                {
-                    restitution: 0.1,
-                    density: 0.1,
-                    render: {
-                        sprite: {
-                            texture: birdFragmentsImages[i],
-                            xScale: 0.3,
-                            yScale: 0.3
-                        }
-                    }
-                }
-            );
-
-            // explosion des fragments dans toutes les directions
-            Matter.Body.setVelocity(fragment, vitesses[i]);
-        
-            Matter.World.add(this.world.engine.world, fragment);
-        }
-    }
-
-    /**
-     * blue bird -> into 3 small birds 
-     */
-    splitIntoThreeBirds(currentBird) {
-        let x = currentBird.body.position.x;
-        let y = currentBird.body.position.y;
-        let size = currentBird.body.circleRadius; // rayon => size/2 diametre
-
-        const smallBirdImage = './src/assets/images/birdBlue.svg';
-
-        const positions = [
-            { x: x - size/2, y: y - size/2 },
-            { x: x + size/2, y: y - size/2 },
-            { x: x - size/2, y: y + size/2 },
-            { x: x + size/2, y: y + size/2 }
-        ]
-
-        const vitesses = [
-            { x: -7, y: -7 },
-            { x:  7, y: -7 },
-            { x: -7, y:  7 },
-            { x:  7, y:  7 },
-        ];
-
-        // remove bird
-        Matter.World.remove(this.world.engine.world, currentBird.body);
-
-        // create 3 small birds
-        for (let i = 0; i < 3; i++) {
-            const smallBird = this.#createSmallBird(
-                positions[i].x, 
-                positions[i].y,
-                size, 
-                smallBirdImage
-            );
-            Matter.Body.setVelocity(smallBird, vitesses[i]);
-            Matter.World.add(this.world.engine.world, smallBird);
-        }
-    }
-
-    #createSmallBird(x, y, size, smallBirdImage) {
-        return Matter.Bodies.circle(x, y, size / 2, {
-            restitution: 0.1,
-            density: 0.1,
-            render: {
-                sprite: {
-                    texture: smallBirdImage,
-                    xScale: 0.15,
-                    yScale: 0.15
-                }
-            }
-        });
-    }
-
     detectCollision(bodyA, bodyB, animal){
         if ((bodyA.label === 'ground' && bodyB.label === animal) 
             || (bodyA.label === animal && bodyB.label === 'ground')) {
@@ -333,6 +219,44 @@ export class Game {
             canvas.style.backgroundPosition = 'center';
         }
     }
+    
+    /**
+     * black bird -> into 4 fragments
+     */
+    explode(currentBird) {
+        const birdFragmentsImages = this.#getBlackBirdFragmentsImages();
+        const positions = this.#getBirdPositions(currentBird);
+        const speeds = this.#changeSpeeds(5); 
+
+        this.#splitBirdIntoFragments(
+            currentBird, 
+            4, 
+            birdFragmentsImages, 
+            positions, 
+            speeds, 
+            'rectangle'
+        );
+    }
+
+    /**
+     * blue bird -> into 3 small birds 
+     */
+    splitIntoThreeBirds(currentBird) {
+        const smallBirdImage = './src/assets/images/birdBlue.svg';
+        const smallBirdImages = [smallBirdImage, smallBirdImage, smallBirdImage];
+
+        const positions = this.#getBirdPositions(currentBird);
+        const speeds = this.#changeSpeeds(7);
+
+        this.#splitBirdIntoFragments(
+            currentBird, 
+            3, 
+            smallBirdImages, 
+            positions, 
+            speeds, 
+            'circle'
+        );
+    }
 
     // --- slingshot --- 
 
@@ -401,6 +325,99 @@ export class Game {
                 this.releaseBird();
             }
         });
+    }
+
+    #splitBirdIntoFragments(currentBird, count, images, positions, speeds, shape) {
+        // remove current bird from the world
+        Matter.World.remove(this.world.engine.world, currentBird.body);
+
+        let sizeFragment = currentBird.body.circleRadius /2;
+
+        for (let i = 0; i < count; i++) {
+            let body;
+            if (shape === 'rectangle') {
+                body = this.#createFragmentBird(positions[i].x, positions[i].y, sizeFragment, images[i]);
+            } else {
+                body = this.#createSmallBird(positions[i].x, positions[i].y, sizeFragment, images[i]);
+            }
+
+            Matter.Body.setVelocity(body, speeds[i]);
+            Matter.World.add(this.world.engine.world, body);
+        }
+    }
+
+    /**
+     * récupère et renvoie les images des fragments de l'oiseau noir
+     */
+    #getBlackBirdFragmentsImages() {
+        return [
+            './src/assets/images/birdBlack_haut_gauche.png',
+            './src/assets/images/birdBlack_haut_droite.png',
+            './src/assets/images/birdBlack_bas_gauche.png',
+            './src/assets/images/birdBlack_bas_droite.png',
+        ];
+    }
+
+    #getBirdPositions(currentBird) {
+        let x = currentBird.body.position.x; 
+        let y = currentBird.body.position.y;
+        let size = currentBird.body.circleRadius /2; // rayon => size/2 of diametre 
+
+        return [
+            { x: x - size, y: y - size },
+            { x: x + size, y: y - size },
+            { x: x - size, y: y + size },
+            { x: x + size, y: y + size }
+        ]
+    }
+
+    /**
+     * renvoie un tableau de vitesses pour les fragments de l'oiseau noir/bleu
+     */
+    #changeSpeeds(number) {
+        return [
+            { x: -number, y: -number }, 
+            { x:  number, y: -number }, 
+            { x: -number, y:  number },  
+            { x:  number, y:  number },  
+        ];
+    }
+
+    /**
+     * create small (blue) bird with a given position size/2 and image
+     */
+    #createSmallBird(x, y, size, smallBirdImage) {
+        return Bodies.circle(x, y, size / 2, {
+            restitution: 0.1,
+            density: 0.1,
+            render: {
+                sprite: {
+                    texture: smallBirdImage,
+                    xScale: 0.15,
+                    yScale: 0.15
+                }
+            }
+        });
+    }
+
+    #createFragmentBird(x, y, size, fragmentImage) {
+        return Bodies.rectangle(
+            x,
+            y,
+            size,
+            size,
+            {
+                restitution: 0.1,
+                density: 0.1,
+                render: {
+                    sprite: {
+                        texture: fragmentImage,
+                        xScale: 0.3,
+                        yScale: 0.3
+                    }
+                }
+            }
+        );
     }
 
     /**
