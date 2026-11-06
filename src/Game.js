@@ -189,15 +189,14 @@ export class Game {
         ]
 
         const vitesses = [
-            { x: -5, y: -5 },
-            { x:  5, y: -5 },
-            { x: -5, y:  5 },
-            { x:  5, y:  5 },
+            { x: -7, y: -7 },
+            { x:  7, y: -7 },
+            { x: -7, y:  7 },
+            { x:  7, y:  7 },
         ];
 
         // remove bird
         Matter.World.remove(this.world.engine.world, currentBird.body);
-        console.log('blue bird removed from world :', currentBird.body);
 
         // create 3 small birds
         for (let i = 0; i < 3; i++) {
@@ -207,6 +206,7 @@ export class Game {
                 size, 
                 smallBirdImage
             );
+            Matter.Body.setVelocity(smallBird, vitesses[i]);
             Matter.World.add(this.world.engine.world, smallBird);
         }
     }
