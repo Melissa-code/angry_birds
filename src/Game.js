@@ -1,11 +1,11 @@
 import PhysicalWorld from './physical_world/PhysicalWorld.js';
 import { loadLevelAsync } from './levels/level_loader.js';
 import { Bird } from './entities/Bird.js';
-import { YellowBird } from './entities/YellowBird.js';
 import { BlackBird } from './entities/BlackBird.js';
 import { BlueBird } from './entities/BlueBird.js';
+import { Slingshot } from './Slingshot.js';
 
-const Bodies = Matter.Bodies;
+const Bodies = Matter.Bodies; // pour av methodes de creation des bodies (rectangle, circle, polygon...)
 
 export class Game {
 
@@ -56,7 +56,8 @@ export class Game {
             entityFound => entityFound instanceof Bird
         );
         this.currentBird = this.birds[this.currentIndexBird];
-        this.setUpSlingshot(); 
+        this.slingshot = new Slingshot(this.container, this.currentBird);
+        // this.setUpSlingshot(); 
         this.world.run();
 
         // collision detection between pig/bird and ground
@@ -111,7 +112,7 @@ export class Game {
         }
     }
 
-    detectCollision(bodyA, bodyB, animal){
+    detectCollision(bodyA, bodyB, animal) {
         if ((bodyA.label === 'ground' && bodyB.label === animal) 
             || (bodyA.label === animal && bodyB.label === 'ground')) {
 
@@ -132,6 +133,9 @@ export class Game {
             this.world.birdNumber = this.currentIndexBird + 1;
             this.world.addNextBird(this.currentBird.body); // monde phys
             this.world.refreshZoneInfos();
+
+            this.slingshot.updateBird(this.currentBird); //rejoue
+
         } else {
             console.log('Il n\'y a plus d\'oiseaux');
             const activePigs = this.world.getPigs().filter(pig => pig.isActive);
@@ -140,6 +144,44 @@ export class Game {
                 this.showMessage('lose');
             }
         }
+    }
+
+    /**
+     * black bird -> into 4 fragments
+     */
+    explode(currentBird) {
+        const birdFragmentsImages = this.#getBlackBirdFragmentsImages();
+        const positions = this.#getBirdPositions(currentBird);
+        const speeds = this.#changeSpeeds(5); 
+
+        this.#splitBirdIntoFragments(
+            currentBird, 
+            4, 
+            birdFragmentsImages, 
+            positions, 
+            speeds, 
+            'rectangle'
+        );
+    }
+
+    /**
+     * blue bird -> into 3 small birds 
+     */
+    splitIntoThreeBirds(currentBird) {
+        const smallBirdImage = './src/assets/images/birdBlue.svg';
+        const smallBirdImages = [smallBirdImage, smallBirdImage, smallBirdImage];
+
+        const positions = this.#getBirdPositions(currentBird);
+        const speeds = this.#changeSpeeds(7);
+
+        this.#splitBirdIntoFragments(
+            currentBird, 
+            3, 
+            smallBirdImages, 
+            positions, 
+            speeds, 
+            'circle'
+        );
     }
 
     gameOver() {
@@ -219,113 +261,8 @@ export class Game {
             canvas.style.backgroundPosition = 'center';
         }
     }
-    
-    /**
-     * black bird -> into 4 fragments
-     */
-    explode(currentBird) {
-        const birdFragmentsImages = this.#getBlackBirdFragmentsImages();
-        const positions = this.#getBirdPositions(currentBird);
-        const speeds = this.#changeSpeeds(5); 
 
-        this.#splitBirdIntoFragments(
-            currentBird, 
-            4, 
-            birdFragmentsImages, 
-            positions, 
-            speeds, 
-            'rectangle'
-        );
-    }
-
-    /**
-     * blue bird -> into 3 small birds 
-     */
-    splitIntoThreeBirds(currentBird) {
-        const smallBirdImage = './src/assets/images/birdBlue.svg';
-        const smallBirdImages = [smallBirdImage, smallBirdImage, smallBirdImage];
-
-        const positions = this.#getBirdPositions(currentBird);
-        const speeds = this.#changeSpeeds(7);
-
-        this.#splitBirdIntoFragments(
-            currentBird, 
-            3, 
-            smallBirdImages, 
-            positions, 
-            speeds, 
-            'circle'
-        );
-    }
-
-    // --- slingshot --- 
-
-    launchBird() {
-        Matter.Body.setStatic(this.currentBird.body, false); 
-        const deltaX = this.startingBirdPosition.x - this.currentBird.body.position.x;
-        const deltaY = this.startingBirdPosition.y - this.currentBird.body.position.y;
-        let speedMultiplier = 0.25; // Ajustez ce facteur pour contrôler la vitesse de lancement
-
-        if (this.currentBird instanceof YellowBird) {
-            speedMultiplier = 0.5;
-        }
-
-        if (this.currentBird instanceof BlackBird) {
-            speedMultiplier = 0.2;
-        }
-        
-        const launchVelocity = {
-            x: deltaX * speedMultiplier,
-            y: deltaY * speedMultiplier
-        };
-
-    
-        Matter.Body.setVelocity(this.currentBird.body, launchVelocity); 
-    }
-
-    releaseBird() {
-        this.isDragging = false;
-        this.launchBird();
-    }
-    
-    pullBird(mouseX, mouseY) {
-        // Matter.Body.setPosition(body, position {x:..., y:...}, [updateVelocity=false])
-        Matter.Body.setPosition(this.currentBird.body, { x: mouseX, y: mouseY });
-    }
-
-    //attrappe l oiseau, tire le en arriere, lâche le , il s'envole dans la direction opposée 
-    setUpSlingshot() {
-        this.startingBirdPosition = { 
-            x: this.currentBird.body.position.x, 
-            y: this.currentBird.body.position.y 
-        };
-
-        this.container.addEventListener('mousedown', (event) => {
-            const position = this.#getMousePosition(event); 
-            const distance = this.#calculateDistance(
-                position.x, position.y,
-                this.currentBird.body.position.x,
-                this.currentBird.body.position.y
-            );
-
-            // active le drag
-            (distance < this.currentBird.body.circleRadius) ? this.isDragging = true 
-            : console.log('clic en dehors de l\'oiseau');
-        });
-
-        this.container.addEventListener('mousemove', (event) => {
-            if (this.isDragging) {
-                const position = this.#getMousePosition(event);
-                this.pullBird(position.x, position.y);
-            };
-        });
-
-        this.container.addEventListener('mouseup', (event) => {
-            if (this.isDragging) {
-                this.releaseBird();
-            }
-        });
-    }
+    // ----------- private methods ------------
 
     #splitBirdIntoFragments(currentBird, count, images, positions, speeds, shape) {
         // remove current bird from the world
@@ -384,7 +321,7 @@ export class Game {
     }
 
     /**
-     * create small (blue) bird with a given position size/2 and image
+     * create small blue bird (circle) with a given position size/2 and image
      */
     #createSmallBird(x, y, size, smallBirdImage) {
         return Bodies.circle(x, y, size / 2, {
@@ -400,6 +337,9 @@ export class Game {
         });
     }
 
+    /**
+     * create a fragment of black bird (rectangle) with a given position size and image
+     */
     #createFragmentBird(x, y, size, fragmentImage) {
         return Bodies.rectangle(
             x,
@@ -418,23 +358,5 @@ export class Game {
                 }
             }
         );
-    }
-
-    /**
-     * récupère la position de la souris par rapport au canvas
-     * non plus coin supérieur gauche de la fenêtre 
-     * mais coin supérieur gauche du canvas
-     */
-    #getMousePosition(event) {
-        const canvas = this.container.querySelector('canvas');
-        const rect = canvas.getBoundingClientRect();
-        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    }
-
-    /**
-     * théorème de Pythagore:distance = √( (x₂-x₁)² + (y₂-y₁)² ) => hypoténuse
-     */
-    #calculateDistance(x1, y1, x2, y2) {
-        return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
     }
 }
