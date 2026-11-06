@@ -36,10 +36,10 @@ s'effondrent de manière réaliste en fonction des impacts et de la gravité.
 
 ### 2.2. Diversité des oiseaux
 
-- **rouge** : classique, sans pouvoir spécial 
+- **rouge** : classique sans pouvoir spécial 
 - **jaune** : accélère en ligne droite
-- **noir** : explose sur commande 
-- **bleu** : se divisent en trois petits oiseaux
+- **noir**  : explose sur commande 
+- **bleu**  : se divise en trois petits oiseaux quand il entre en collision 
 - **blanc** : pond un œuf explosif et est propulsée vers le haut
 
 

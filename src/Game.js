@@ -37,7 +37,8 @@ export class Game {
     }
   
     /**
-     * règle du langage constructeur doit toujours retourner l'objet immédiatement et synchrone
+     * règle du langage constructeur doit toujours retourner l'objet immédiatement 
+     * et de manière synchrone
      */
     async init(currentLevel) {
         console.log('niveau demandé :', currentLevel);
@@ -61,33 +62,32 @@ export class Game {
         // collision detection between pig/bird and ground
         Matter.Events.on(this.world.engine,'collisionStart', (event) => {
             const pairs = event.pairs;
-
-            // console.log("currentbird", this.currentBird);
-
             pairs.forEach(pair => {
                 const { bodyA, bodyB } = pair; 
 
+                // BlueBird collision detection
                 let blueBirdBody = null; 
-
                 if (this.currentBird instanceof BlueBird) {
                     blueBirdBody = this.currentBird.body;
                     if (bodyA === blueBirdBody || bodyB === blueBirdBody) {
                         console.log('blue bird collision detected');
                         blueBirdBody.isActive = false; // l'oiseau est touché
-                        // this.explode(this.currentBird);
+                        this.splitIntoThreeBirds(this.currentBird);
                         this.addNextBird();
                         return; 
                     }
                 } 
                 
-                const pig = this.detectCollision(bodyA, bodyB, 'pig');
+                // ground/pig -> score +100
+                const pig = this.detectCollision(bodyA, bodyB, 'pig'); 
                 if (pig && pig.isActive) {
                     pig.isActive = false; // le cochon est touché
                     this.world.score += 100;
                     this.world.refreshZoneInfos(); 
                 } 
 
-                const bird = this.detectCollision(bodyA, bodyB, 'bird');
+                // ground/bird -> next bird
+                const bird = this.detectCollision(bodyA, bodyB, 'bird'); 
                 if (bird && bird.isActive) {
                     bird.isActive = false; // l'oiseau est touché
 
@@ -98,6 +98,7 @@ export class Game {
             this.gameOver();
         });
 
+        // BlackBird (event: keydown)
         if (this.currentBird instanceof BlackBird) {
             document.addEventListener('keydown', (event) => {
                 console.log(`Touche pressée : ${event.key}`);
@@ -168,6 +169,60 @@ export class Game {
         
             Matter.World.add(this.world.engine.world, fragment);
         }
+    }
+
+    /**
+     * blue bird -> into 3 small birds 
+     */
+    splitIntoThreeBirds(currentBird) {
+        let x = currentBird.body.position.x;
+        let y = currentBird.body.position.y;
+        let size = currentBird.body.circleRadius; // rayon => size/2 diametre
+
+        const smallBirdImage = './src/assets/images/birdBlue.svg';
+
+        const positions = [
+            { x: x - size/2, y: y - size/2 },
+            { x: x + size/2, y: y - size/2 },
+            { x: x - size/2, y: y + size/2 },
+            { x: x + size/2, y: y + size/2 }
+        ]
+
+        const vitesses = [
+            { x: -5, y: -5 },
+            { x:  5, y: -5 },
+            { x: -5, y:  5 },
+            { x:  5, y:  5 },
+        ];
+
+        // remove bird
+        Matter.World.remove(this.world.engine.world, currentBird.body);
+        console.log('blue bird removed from world :', currentBird.body);
+
+        // create 3 small birds
+        for (let i = 0; i < 3; i++) {
+            const smallBird = this.#createSmallBird(
+                positions[i].x, 
+                positions[i].y,
+                size, 
+                smallBirdImage
+            );
+            Matter.World.add(this.world.engine.world, smallBird);
+        }
+    }
+
+    #createSmallBird(x, y, size, smallBirdImage) {
+        return Matter.Bodies.circle(x, y, size / 2, {
+            restitution: 0.1,
+            density: 0.1,
+            render: {
+                sprite: {
+                    texture: smallBirdImage,
+                    xScale: 0.15,
+                    yScale: 0.15
+                }
+            }
+        });
     }
 
     detectCollision(bodyA, bodyB, animal){
