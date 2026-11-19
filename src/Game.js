@@ -2,6 +2,7 @@ import PhysicalWorld from './physical_world/PhysicalWorld.js';
 import { loadLevelAsync } from './levels/level_loader.js';
 import { Bird } from './entities/Bird.js';
 import { BlackBird } from './entities/BlackBird.js';
+import { WhiteBird } from './entities/WhiteBird.js';
 import { BlueBird } from './entities/BlueBird.js';
 import { Slingshot } from './Slingshot.js';
 
@@ -90,7 +91,7 @@ export class Game {
             this.slingshot.updateBird(this.currentBird); //rejoue
 
         } else {
-            console.log('Il n\'y a plus d\'oiseaux');
+            // console.log('Il n\'y a plus d\'oiseaux');
             const activePigs = this.world.getPigs().filter(pig => pig.isActive);
     
             if (activePigs.length > 0 && !this.hasWon) {
@@ -115,6 +116,25 @@ export class Game {
             speeds, 
             'rectangle'
         );
+    }
+
+    layExplosiveEgg() {
+        const eggImage = this.#getEggImage() ;
+        console.log('img', eggImage)
+
+        const egg = this.#createEgg(
+            this.currentBird.body.position.x,
+            this.currentBird.body.position.y, 
+            20, 
+            eggImage)
+
+        this.world.addBodies(egg); 
+     
+        console.log('juste avant collision', egg)
+        this.#initCollisions() ;
+
+
+
     }
 
     /**
@@ -236,6 +256,17 @@ export class Game {
                         return; 
                     }
                 } 
+
+                // TEST
+            
+                if (bodyA.label === 'egg' || bodyB.label === 'egg') {
+                    console.log('OEUF collision detected');
+                
+                    // this.splitIntoThreeBirds(this.currentBird);
+                    // this.addNextBird();
+                    return; 
+                }
+           
                 
                 // ground/pig -> score +100
                 const pig = this.detectCollision(bodyA, bodyB, 'pig'); 
@@ -262,7 +293,7 @@ export class Game {
      * BlackBird (event: keydown)
      */
     #initKeyboardEvents() {
-        if (this.currentBird instanceof BlackBird) {
+        if (this.currentBird instanceof BlackBird ) {
             document.addEventListener('keydown', (event) => {
                 if (event.code !== 'Space') return; 
 
@@ -272,6 +303,27 @@ export class Game {
                 this.currentBird.powerUsed = true;
                 this.currentBird.body.isActive = false;
                 this.explode(this.currentBird);
+                this.addNextBird();
+            });
+        }
+
+        console.log('current oiseau', this.currentBird)
+
+        if (this.currentBird instanceof WhiteBird ) {
+            console.log('oiseau blanc' )
+            document.addEventListener('keydown', (event) => {
+                console.log('oiseau avant event')
+                if (event.code !== 'Space') return; 
+
+                // if (!(this.currentBird instanceof BlackBird)) return;                
+                if (!this.currentBird.body.isLaunched || this.currentBird.powerUsed) return;    
+
+                console.log('oiseau lancé ... ')
+
+                this.currentBird.powerUsed = true;
+                this.currentBird.body.isActive = false;
+                console.log('oiseau blanc explose ')
+                this.layExplosiveEgg(); 
                 this.addNextBird();
             });
         }
@@ -294,6 +346,10 @@ export class Game {
             Matter.Body.setVelocity(body, speeds[i]);
             Matter.World.add(this.world.engine.world, body);
         }
+    }
+
+    #getEggImage() {
+        return './src/assets/images/birdWhite.svg';
     }
 
     /**
@@ -331,6 +387,23 @@ export class Game {
             { x: -number, y:  number },  
             { x:  number, y:  number },  
         ];
+    }
+
+    #createEgg(x, y, size, eggImage) {
+        return Bodies.circle(x, y, size / 2, {
+            restitution: 0.1,
+            density: 0.1,
+            render: {
+                sprite: {
+                    texture: eggImage,
+                    xScale: 0.15,
+                    yScale: 0.15
+                }
+            },
+            label : 'egg', // label pour identifier le corps
+            isActive : true,
+            isLaunched : false,
+        });
     }
 
     /**

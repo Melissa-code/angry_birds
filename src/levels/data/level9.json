@@ -1,7 +1,7 @@
 {
     "name": "level-10",
     "background": "./src/assets/images/backgrounds/fonds10.png",
-    "birdsCount": 5,
+    "birdsCount": 4,
     "entities": [
         { "type": "ground", "x": 600, "y": 490, "width": 1200, "height": 30, "color": "#005c00" },
         { "type": "ground", "x": 600, "y": 10, "width": 1200, "height": 30, "color": "#983628" },
@@ -10,12 +10,11 @@
         { "type": "block", "x": 1190, "y": 0, "width": 100, "height": 1600, "color": "#983628", "isStatic": true },
 
         { "type": "block", "x": 160, "y": 400, "width": 30, "height": 150, "color": "#983628", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
-        { "type": "bird", "x": 160, "y": 305, "radius": 15, "color": "#ff0000", "isStatic": true },
-
+        { "type": "bird", "kind": "white", "x": 160, "y": 300, "radius": 15, "color": "#FFFFFF", "isStatic": true },
+        { "type": "bird", "kind": "white", "x": 160, "y": 300, "radius": 15, "color": "#FFFFFF", "isStatic": true },
+        { "type": "bird", "kind": "white", "x": 160, "y": 300, "radius": 15, "color": "#FFFFFF", "isStatic": true },
+        { "type": "bird", "kind": "white", "x": 160, "y": 300, "radius": 15, "color": "#FFFFFF", "isStatic": true },
+        
         { "type": "block", "x": 450, "y": 425, "width": 20, "height": 100, "color": "#983628", "isStatic": true },
 
         { "type": "block", "x": 580, "y": 424, "width": 70, "height": 100, "color": "#983628", "isStatic": false },
