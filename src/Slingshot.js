@@ -40,6 +40,7 @@ export class Slingshot {
         const deltaX = this.startingBirdPosition.x - this.currentBird.body.position.x;
         const deltaY = this.startingBirdPosition.y - this.currentBird.body.position.y;
         let speedMultiplier = 0.25; // Ajustez ce facteur pour contrôler la vitesse de lancement
+        this.currentBird.body.isLaunched = true; 
 
         if (this.currentBird instanceof YellowBird) {
             speedMultiplier = 0.5;

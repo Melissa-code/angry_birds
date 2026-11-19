@@ -264,12 +264,15 @@ export class Game {
     #initKeyboardEvents() {
         if (this.currentBird instanceof BlackBird) {
             document.addEventListener('keydown', (event) => {
-                console.log(`Touche pressée : ${event.key}`);
-                let blackBirdBody = this.currentBird.body;
-                blackBirdBody.isActive = false; // l'oiseau est touché
+                if (event.code !== 'Space') return; 
+
+                if (!(this.currentBird instanceof BlackBird)) return;                
+                if (!this.currentBird.body.isLaunched || this.currentBird.powerUsed) return;    
+
+                this.currentBird.powerUsed = true;
+                this.currentBird.body.isActive = false;
                 this.explode(this.currentBird);
                 this.addNextBird();
-                return; 
             });
         }
     }
