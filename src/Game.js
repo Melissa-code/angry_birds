@@ -129,7 +129,7 @@ export class Game {
 
         // add to phys world directly
         Matter.Composite.add(this.world.engine.world, egg);
-        // ajoute la photo './assets/images/explode.svg' à egg 
+        // image d'explosion
         this.#getExplosionImage(); 
     }
 
@@ -306,6 +306,11 @@ export class Game {
             } else if (bird instanceof WhiteBird) {
                 bird.powerUsed = true;
                 this.layExplosiveEgg();
+
+                Matter.Body.setVelocity(
+                    this.currentBird.body, 
+                    { x: this.currentBird.body.velocity.x * 0.3, y: -15 }
+                );
             }
         });
     }
@@ -390,13 +395,16 @@ export class Game {
 
     #getExplosionImage() {
         const explodeImage = new Image();
+
         explodeImage.src = './src/assets/images/explode.svg';
         explodeImage.style.position = 'absolute';
-        explodeImage.style.left = `${this.currentBird.body.position.x - 25}px`;
-        explodeImage.style.top = `${this.currentBird.body.position.y - 25}px`;
+        explodeImage.style.left = `${this.currentBird.body.position.x - 10}px`;
+        explodeImage.style.top = `${this.currentBird.body.position.y - 10}px`;
         explodeImage.style.width = '50px';
         explodeImage.style.height = '50px';
         this.container.appendChild(explodeImage);
+
+        setTimeout(() => explodeImage.remove(), 500); 
     }
 
     /**
