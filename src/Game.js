@@ -129,9 +129,8 @@ export class Game {
 
         // add to phys world directly
         Matter.Composite.add(this.world.engine.world, egg);
-        
-        console.log('juste avant collision', egg)
-
+        // ajoute la photo './assets/images/explode.svg' à egg 
+        this.#getExplosionImage(); 
     }
 
     /**
@@ -307,7 +306,6 @@ export class Game {
             } else if (bird instanceof WhiteBird) {
                 bird.powerUsed = true;
                 this.layExplosiveEgg();
-                this.addNextBird();
             }
         });
     }
@@ -388,6 +386,17 @@ export class Game {
             isActive : true,
             isLaunched : false,
         });
+    }
+
+    #getExplosionImage() {
+        const explodeImage = new Image();
+        explodeImage.src = './src/assets/images/explode.svg';
+        explodeImage.style.position = 'absolute';
+        explodeImage.style.left = `${this.currentBird.body.position.x - 25}px`;
+        explodeImage.style.top = `${this.currentBird.body.position.y - 25}px`;
+        explodeImage.style.width = '50px';
+        explodeImage.style.height = '50px';
+        this.container.appendChild(explodeImage);
     }
 
     /**
