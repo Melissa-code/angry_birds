@@ -129,8 +129,6 @@ export class Game {
 
         // add to phys world directly
         Matter.Composite.add(this.world.engine.world, egg);
-        // image d'explosion
-        this.#getExplosionImage(); 
     }
 
     /**
@@ -237,6 +235,7 @@ export class Game {
         // collision detection between pig/bird and ground
         Matter.Events.on(this.world.engine,'collisionStart', (event) => {
             const pairs = event.pairs;
+        
             pairs.forEach(pair => {
                 const { bodyA, bodyB } = pair; 
 
@@ -253,16 +252,16 @@ export class Game {
                     }
                 } 
 
-                // TEST
-            
-                if (bodyA.label === 'egg' || bodyB.label === 'egg') {
+                // egg collision detection
+                const egg = this.detectCollision(bodyA, bodyB, 'egg'); 
+                if (egg && egg.isActive) {
                     console.log('OEUF collision detected');
-                
-                    // this.splitIntoThreeBirds(this.currentBird);
-                    // this.addNextBird();
+                    this.#getExplosionImage(egg.position.x, egg.position.y); 
+                    egg.isActive = false;
+                    Matter.Composite.remove(this.world.engine.world, egg);  
+                    this.addNextBird();
                     return; 
                 }
-           
                 
                 // ground/pig -> score +100
                 const pig = this.detectCollision(bodyA, bodyB, 'pig'); 
@@ -393,15 +392,15 @@ export class Game {
         });
     }
 
-    #getExplosionImage() {
+    #getExplosionImage(x, y) {
         const explodeImage = new Image();
 
         explodeImage.src = './src/assets/images/explode.svg';
         explodeImage.style.position = 'absolute';
-        explodeImage.style.left = `${this.currentBird.body.position.x - 10}px`;
-        explodeImage.style.top = `${this.currentBird.body.position.y - 10}px`;
+        explodeImage.style.left = `${x - 10}px`;
+        explodeImage.style.top = `${y - 10}px`;
         explodeImage.style.width = '50px';
-        explodeImage.style.height = '50px';
+
         this.container.appendChild(explodeImage);
 
         setTimeout(() => explodeImage.remove(), 500); 
