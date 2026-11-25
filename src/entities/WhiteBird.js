@@ -14,8 +14,8 @@ export class WhiteBird extends Bird {
       this.radius, 
       {
         isStatic: isStatic,
-        restitution: 0.4, // rebondissement
-        density: 0.3,     // densité
+        restitution: 0.3, // rebondissement
+        density: 0.05, // densité
         render: { 
           fillStyle: this.color,
           sprite: {

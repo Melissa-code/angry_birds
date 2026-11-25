@@ -1,13 +1,17 @@
 import { YellowBird } from './entities/YellowBird.js';
 import { BlackBird } from './entities/BlackBird.js';
-
+import { WhiteBird } from './entities/WhiteBird.js';
 
 export class Slingshot {
     
     constructor(container, currentBird) {
         this.container = container;
         this.currentBird = currentBird;
-        this.startingBirdPosition = currentBird.body.position; 
+        //copie position oiseau pour garder sa position de départ
+        this.startingBirdPosition = {
+            x: currentBird.body.position.x,
+            y: currentBird.body.position.y
+        };
         this.isDragging = false;
 
         this.#initListeners();
@@ -46,8 +50,8 @@ export class Slingshot {
             speedMultiplier = 0.5;
         }
 
-        if (this.currentBird instanceof BlackBird) {
-            speedMultiplier = 0.2;
+        if (this.currentBird instanceof BlackBird || this.currentBird instanceof WhiteBird) {
+            speedMultiplier = 0.3;
         }
         
         const launchVelocity = {

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    
+    <mask id="cutBeakMask">
+      <rect x="0" y="0" width="200" height="200" fill="#FFFFFF" />
+      
+      <polygon points="100,104 75,125 100,132 125,125" fill="#000000" />
+      <polygon points="80,127 100,147 120,127 100,133" fill="#000000" />
+    </mask>
+  </defs>
+
+  
+  <g mask="url(#cutBeakMask)">
+    
+    <path d="M 80 48 L 62 17 L 94 36 L 92 10 L 118 46 Z" fill="#F4332C" stroke="#000000" stroke-width="3.5" stroke-linejoin="round" />
+
+    
+    <path d="M 38 112 C 38 66, 66 44, 100 44 C 134 44, 162 66, 162 112 C 162 152, 134 176, 100 182 C 66 176, 38 152, 38 112 Z" fill="#F4332C" stroke="#000000" stroke-width="3.5" stroke-linejoin="round" />
+
+    
+    <path d="M 82 47 L 116 47 L 113 53 L 85 53 Z" fill="#F4332C" />
+
+    
+    <circle cx="73" cy="103" r="11" fill="#F4332C" />
+    <circle cx="75" cy="103" r="6.5" fill="#000000" />
+    <circle cx="73" cy="100.5" r="2.2" fill="#FFFFFF" />
+
+    <circle cx="127" cy="103" r="11" fill="#F4332C" />
+    <circle cx="125" cy="103" r="6.5" fill="#000000" />
+    <circle cx="127" cy="100.5" r="2.2" fill="#FFFFFF" />
+
+    
+    <polygon points="48,80 95,99 92,106 45,88" fill="#000000" />
+    <polygon points="152,80 105,99 108,106 155,88" fill="#000000" />
+  </g>
+
+  
+  <polygon points="100,104 75,125 100,132 125,125" fill="none" stroke="#000000" stroke-width="3" stroke-linejoin="round" />
+  <polygon points="80,127 100,147 120,127 100,133" fill="none" stroke="#000000" stroke-width="3" stroke-linejoin="round" />
+</svg>

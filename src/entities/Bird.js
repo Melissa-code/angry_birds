@@ -15,13 +15,13 @@ export class Bird extends Entity {
       {
         isStatic: isStatic,
         restitution: 0.3, // rebondissement
-        density: 0.2, // densité
+        density: 0.05, // densité
         render: { 
           fillStyle: this.color,
           sprite: {
-            texture: './src/assets/images/birdRed1.svg',
-            xScale: 0.5,
-            yScale: 0.5,
+            texture: './src/assets/images/birdRed4.svg',
+            xScale: 0.3,
+            yScale: 0.3,
 
           }
          }

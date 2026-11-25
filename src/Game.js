@@ -42,7 +42,6 @@ export class Game {
      * et de manière synchrone
      */
     async init(currentLevel) {
-        console.log('niveau demandé :', currentLevel);
         this.currentLevel = currentLevel; // pour mémoriser le niveau en cours
         [this.background, this.entities] = await loadLevelAsync(currentLevel); // return background & entities[]
         this.bodies = this.entities.map(entity => entity.body);
@@ -120,20 +119,18 @@ export class Game {
 
     layExplosiveEgg() {
         const eggImage = this.#getEggImage() ;
-        console.log('img', eggImage)
 
         const egg = this.#createEgg(
             this.currentBird.body.position.x,
-            this.currentBird.body.position.y, 
-            20, 
-            eggImage)
+            this.currentBird.body.position.y,
+            20,
+            eggImage
+        );
 
-        this.world.addBodies(egg); 
-     
+        // add to phys world directly
+        Matter.Composite.add(this.world.engine.world, egg);
+        
         console.log('juste avant collision', egg)
-        this.#initCollisions() ;
-
-
 
     }
 
@@ -290,43 +287,29 @@ export class Game {
     }
 
     /**
-     * BlackBird (event: keydown)
+     * BlackBird / WhiteBird (event: keydown)
      */
     #initKeyboardEvents() {
-        if (this.currentBird instanceof BlackBird ) {
-            document.addEventListener('keydown', (event) => {
-                if (event.code !== 'Space') return; 
+        document.addEventListener('keydown', (event) => {
+            if (event.code !== 'Space') return;
 
-                if (!(this.currentBird instanceof BlackBird)) return;                
-                if (!this.currentBird.body.isLaunched || this.currentBird.powerUsed) return;    
+            const bird = this.currentBird;
+            if (!bird || !bird.body.isLaunched || bird.powerUsed) return;
 
-                this.currentBird.powerUsed = true;
-                this.currentBird.body.isActive = false;
-                this.explode(this.currentBird);
+            // BlackBird: explode
+            if (bird instanceof BlackBird) {
+                bird.powerUsed = true;
+                bird.body.isActive = false;
+                this.explode(bird);
                 this.addNextBird();
-            });
-        }
 
-        console.log('current oiseau', this.currentBird)
-
-        if (this.currentBird instanceof WhiteBird ) {
-            console.log('oiseau blanc' )
-            document.addEventListener('keydown', (event) => {
-                console.log('oiseau avant event')
-                if (event.code !== 'Space') return; 
-
-                // if (!(this.currentBird instanceof BlackBird)) return;                
-                if (!this.currentBird.body.isLaunched || this.currentBird.powerUsed) return;    
-
-                console.log('oiseau lancé ... ')
-
-                this.currentBird.powerUsed = true;
-                this.currentBird.body.isActive = false;
-                console.log('oiseau blanc explose ')
-                this.layExplosiveEgg(); 
+            // WhiteBird: lay egg
+            } else if (bird instanceof WhiteBird) {
+                bird.powerUsed = true;
+                this.layExplosiveEgg();
                 this.addNextBird();
-            });
-        }
+            }
+        });
     }
 
     #splitBirdIntoFragments(currentBird, count, images, positions, speeds, shape) {
@@ -349,7 +332,7 @@ export class Game {
     }
 
     #getEggImage() {
-        return './src/assets/images/birdWhite.svg';
+        return './src/assets/images/egg.svg';
     }
 
     /**
@@ -393,6 +376,7 @@ export class Game {
         return Bodies.circle(x, y, size / 2, {
             restitution: 0.1,
             density: 0.1,
+            frictionAir: 0.05,
             render: {
                 sprite: {
                     texture: eggImage,
