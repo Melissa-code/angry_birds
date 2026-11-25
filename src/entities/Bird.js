@@ -19,9 +19,9 @@ export class Bird extends Entity {
         render: { 
           fillStyle: this.color,
           sprite: {
-            texture: './src/assets/images/bird.svg',
-            xScale: 0.3,
-            yScale: 0.3,
+            texture: './src/assets/images/birdRed1.svg',
+            xScale: 0.5,
+            yScale: 0.5,
 
           }
          }

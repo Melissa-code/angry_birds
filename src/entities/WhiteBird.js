@@ -19,9 +19,9 @@ export class WhiteBird extends Bird {
         render: { 
           fillStyle: this.color,
           sprite: {
-            texture: './src/assets/images/birdWhite.svg',
-            xScale: 0.3,
-            yScale: 0.3,
+            texture: './src/assets/images/birdWhite4.svg',
+            xScale: 0.4,
+            yScale: 0.4,
           }
          }
       }

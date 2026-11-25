@@ -17,7 +17,7 @@ export class Pig extends Entity {
         render: { 
           fillStyle: this.color,
           sprite: {
-            texture: './src/assets/images/pig.png',
+            texture: './src/assets/images/pig4.svg',
             xScale: 0.4,
             yScale: 0.4,
           }

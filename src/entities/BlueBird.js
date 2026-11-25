@@ -19,9 +19,9 @@ export class BlueBird extends Bird {
         render: { 
           fillStyle: this.color,
           sprite: {
-            texture: './src/assets/images/birdBlue.svg',
-            xScale: 0.3,
-            yScale: 0.3,
+            texture: './src/assets/images/birdBlue1.svg',
+            xScale: 0.4,
+            yScale: 0.4,
           }
          }
       }
