@@ -19,6 +19,7 @@ export class Game {
         this.birds = [];
         this.currentIndexBird = 0;
         this.currentBird = null; 
+        this.currentEgg = null; 
         this.world = new PhysicalWorld(width, height, container);
         this.isDragging = false; 
         this.startingBirdPosition = null;
@@ -119,16 +120,13 @@ export class Game {
 
     layExplosiveEgg() {
         const eggImage = this.#getEggImage() ;
-
-        const egg = this.#createEgg(
-            this.currentBird.body.position.x,
-            this.currentBird.body.position.y,
-            20,
-            eggImage
-        );
+        const x = this.currentBird.body.position.x;
+        const y = this.currentBird.body.position.y;
+        
+        this.currentEgg = this.#createEgg(x, y, 20, eggImage);
 
         // add to phys world directly
-        Matter.Composite.add(this.world.engine.world, egg);
+        Matter.Composite.add(this.world.engine.world, this.currentEgg);
     }
 
     /**
@@ -244,7 +242,6 @@ export class Game {
                 if (this.currentBird instanceof BlueBird) {
                     blueBirdBody = this.currentBird.body;
                     if (bodyA === blueBirdBody || bodyB === blueBirdBody) {
-                        console.log('blue bird collision detected');
                         blueBirdBody.isActive = false; // l'oiseau est touché
                         this.splitIntoThreeBirds(this.currentBird);
                         this.addNextBird();
@@ -252,16 +249,26 @@ export class Game {
                     }
                 } 
 
-                // egg collision detection
-                const egg = this.detectCollision(bodyA, bodyB, 'egg'); 
-                if (egg && egg.isActive) {
-                    console.log('OEUF collision detected');
-                    this.#getExplosionImage(egg.position.x, egg.position.y); 
-                    egg.isActive = false;
-                    Matter.Composite.remove(this.world.engine.world, egg);  
-                    this.addNextBird();
-                    return; 
-                }
+                // egg collision detection with ground 
+                const egg = this.detectCollision(bodyA, bodyB, 'egg');
+                // other collision detection (pig/block)
+                if (this.currentEgg !== null && this.currentEgg.isActive) {
+                    if (bodyA === this.currentEgg || bodyB === this.currentEgg) {
+                        if (bodyA.label === 'bird' || bodyB.label === 'bird') return; 
+                        
+                        this.#getExplosionImage(
+                            this.currentEgg.position.x, 
+                            this.currentEgg.position.y
+                        ); 
+                        this.currentEgg.isActive = false;
+                        Matter.Composite.remove(
+                            this.world.engine.world, 
+                            this.currentEgg
+                        );  
+                        this.currentEgg = null;
+                        return; 
+                    }
+                 }
                 
                 // ground/pig -> score +100
                 const pig = this.detectCollision(bodyA, bodyB, 'pig'); 
@@ -279,7 +286,7 @@ export class Game {
                     this.addNextBird();
                 }
             });
-
+            
             this.gameOver();
         });
     }
@@ -376,7 +383,7 @@ export class Game {
 
     #createEgg(x, y, size, eggImage) {
         return Bodies.circle(x, y, size / 2, {
-            restitution: 0.1,
+            restitution: 0.3,
             density: 0.1,
             frictionAir: 0.05,
             render: {
@@ -397,9 +404,10 @@ export class Game {
 
         explodeImage.src = './src/assets/images/explode.svg';
         explodeImage.style.position = 'absolute';
-        explodeImage.style.left = `${x - 10}px`;
-        explodeImage.style.top = `${y - 10}px`;
+        explodeImage.style.left = `${x - 2}px`;
+        explodeImage.style.top = `${y - 2}px`;
         explodeImage.style.width = '50px';
+        explodeImage.style.height = '50px';
 
         this.container.appendChild(explodeImage);
 
