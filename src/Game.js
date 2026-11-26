@@ -255,10 +255,12 @@ export class Game {
                 if (this.currentEgg !== null && this.currentEgg.isActive) {
                     if (bodyA === this.currentEgg || bodyB === this.currentEgg) {
                         if (bodyA.label === 'bird' || bodyB.label === 'bird') return; 
+
+                        const enemyPosition = this.#getPositionEnemy(bodyA, bodyB); 
                         
                         this.#getExplosionImage(
-                            this.currentEgg.position.x, 
-                            this.currentEgg.position.y
+                            enemyPosition.x,
+                            enemyPosition.y
                         ); 
                         this.currentEgg.isActive = false;
                         Matter.Composite.remove(
@@ -286,9 +288,18 @@ export class Game {
                     this.addNextBird();
                 }
             });
-            
+
             this.gameOver();
         });
+    }
+
+    #getPositionEnemy(bodyA, bodyB) {
+        if (bodyA.label === 'pig' || bodyA.label === 'block') {
+            return this.enemyPosition = { x: bodyA.position.x, y: bodyA.position.y };
+        } else if (bodyB.label === 'pig' || bodyB.label === 'block') {
+            return this.enemyPosition = { x: bodyB.position.x, y: bodyB.position.y };
+        }
+        return { x: this.currentEgg.position.x, y: this.currentEgg.position.y };
     }
 
     /**
@@ -400,12 +411,14 @@ export class Game {
     }
 
     #getExplosionImage(x, y) {
+        const canvas = this.container.querySelector('canvas');
         const explodeImage = new Image();
-
+        
         explodeImage.src = './src/assets/images/explode.svg';
         explodeImage.style.position = 'absolute';
-        explodeImage.style.left = `${x - 2}px`;
-        explodeImage.style.top = `${y - 2}px`;
+        // position de l'ennemi dans le canvas (distance entre le bord gauche du container et le bord gauche du canvas)
+        explodeImage.style.left = `${canvas.offsetLeft + x - 25}px`;// 25 = 1/2 de 50 (taille de l'image-> au centre )
+        explodeImage.style.top = `${canvas.offsetTop + y - 25}px`;
         explodeImage.style.width = '50px';
         explodeImage.style.height = '50px';
 
